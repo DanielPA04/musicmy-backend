@@ -1,0 +1,1 @@
+Hay que añadir los notnulls cuando haga falta y cambiar la base de datos

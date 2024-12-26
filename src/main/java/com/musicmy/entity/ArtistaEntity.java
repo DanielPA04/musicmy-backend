@@ -1,24 +1,20 @@
 package com.musicmy.entity;
 
-import java.time.LocalDate;
-import java.sql.Blob;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
 import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "album")
-public class AlbumEntity {
+import java.sql.Blob;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "artista")
+public class ArtistaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,21 +22,20 @@ public class AlbumEntity {
     @Size(min = 3, max = 255)
     private String nombre;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate fecha;
+    @Size(min = 3, max = 255)
+    private String nombrereal;
 
-    private String genero;
-
+    @Size(min = 3, max = 255)
     private String descripcion;
 
-    private String discografica;
+    private String spotify;
 
-    Blob img;
+    private Blob img;
 
-    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private java.util.List<GrupoalbumartistaEntity> grupoalbumartistas;
 
-    public AlbumEntity() {
+    public ArtistaEntity() {
         this.grupoalbumartistas = new java.util.ArrayList<>();
     }
 
@@ -60,20 +55,12 @@ public class AlbumEntity {
         this.nombre = nombre;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
+    public String getNombreReal() {
+        return nombrereal;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
+    public void setNombreReal(String nombrereal) {
+        this.nombrereal = nombrereal;
     }
 
     public String getDescripcion() {
@@ -84,12 +71,12 @@ public class AlbumEntity {
         this.descripcion = descripcion;
     }
 
-    public String getDiscografica() {
-        return discografica;
+    public String getSpotify() {
+        return spotify;
     }
 
-    public void setDiscografica(String discografica) {
-        this.discografica = discografica;
+    public void setSpotify(String spotify) {
+        this.spotify = spotify;
     }
 
     public Blob getImg() {

@@ -6,10 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.musicmy.entity.AlbumEntity;
 import com.musicmy.repository.AlbumRepository;
 
+@Service
 public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     @Autowired
@@ -55,7 +57,7 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
             oAlbumEntity.setGenero(generos[oRandomService.getRandomInt(0, generos.length - 1)]);
             oAlbumEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
             oAlbumEntity.setDiscografica(discograficas[oRandomService.getRandomInt(0, discograficas.length - 1)]);
-            oAlbumEntity.setImagen(null);
+            oAlbumEntity.setImg(null);
             oAlbumRepository.save(oAlbumEntity);
         }
         return oAlbumRepository.count();
@@ -95,38 +97,38 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     @Override
     public AlbumEntity create(AlbumEntity oUsuarioEntity) {
-       return oAlbumRepository.save(oUsuarioEntity);
+        return oAlbumRepository.save(oUsuarioEntity);
     }
 
     @Override
     public AlbumEntity update(AlbumEntity oUsuarioEntity) {
-       AlbumEntity oAlbumEntityFromDatabase = oAlbumRepository.findById(oUsuarioEntity.getId()).get();
-       if (oUsuarioEntity.getNombre() != null) {
-           oAlbumEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
-       }
-       if (oUsuarioEntity.getFecha() != null) {
-           oAlbumEntityFromDatabase.setFecha(oUsuarioEntity.getFecha());
-       }
-       if (oUsuarioEntity.getGenero() != null) {
-           oAlbumEntityFromDatabase.setGenero(oUsuarioEntity.getGenero());
-       }
-       if (oUsuarioEntity.getDescripcion() != null) {
-           oAlbumEntityFromDatabase.setDescripcion(oUsuarioEntity.getDescripcion());
-       }
-       if (oUsuarioEntity.getDiscografica() != null) {
-           oAlbumEntityFromDatabase.setDiscografica(oUsuarioEntity.getDiscografica());
-       }
-       if (oUsuarioEntity.getImagen() != null) {
-           oAlbumEntityFromDatabase.setImagen(oUsuarioEntity.getImagen());
-       }
-       return oAlbumRepository.save(oAlbumEntityFromDatabase);
+        AlbumEntity oAlbumEntityFromDatabase = oAlbumRepository.findById(oUsuarioEntity.getId()).get();
+        if (oUsuarioEntity.getNombre() != null) {
+            oAlbumEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
+        }
+        if (oUsuarioEntity.getFecha() != null) {
+            oAlbumEntityFromDatabase.setFecha(oUsuarioEntity.getFecha());
+        }
+        if (oUsuarioEntity.getGenero() != null) {
+            oAlbumEntityFromDatabase.setGenero(oUsuarioEntity.getGenero());
+        }
+        if (oUsuarioEntity.getDescripcion() != null) {
+            oAlbumEntityFromDatabase.setDescripcion(oUsuarioEntity.getDescripcion());
+        }
+        if (oUsuarioEntity.getDiscografica() != null) {
+            oAlbumEntityFromDatabase.setDiscografica(oUsuarioEntity.getDiscografica());
+        }
+        if (oUsuarioEntity.getImg() != null) {
+            oAlbumEntityFromDatabase.setImg(oUsuarioEntity.getImg());
+        }
+        return oAlbumRepository.save(oAlbumEntityFromDatabase);
 
     }
 
     @Override
     public Long deleteAll() {
-       oAlbumRepository.deleteAll();
-       return this.count();
+        oAlbumRepository.deleteAll();
+        return this.count();
     }
 
 }

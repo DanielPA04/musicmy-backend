@@ -1,9 +1,12 @@
 package com.musicmy.entity;
 
 import java.time.LocalDate;
+import java.util.Base64;
 import java.sql.Blob;
+import java.sql.SQLException;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,7 +38,7 @@ public class AlbumEntity {
 
     private String discografica;
 
-    Blob img;
+    private Blob img;
 
     @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
     private java.util.List<GrupoalbumartistaEntity> grupoalbumartistas;
@@ -98,6 +101,10 @@ public class AlbumEntity {
 
     public void setImg(Blob img) {
         this.img = img;
+    }
+
+    public int getGrupoalbumartistas() {
+        return grupoalbumartistas.size();
     }
 
 }

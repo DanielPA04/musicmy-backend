@@ -40,6 +40,11 @@ public class Grupoalbumartista {
         return new ResponseEntity<Long>(oGrupoalbumartistaService.count(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<GrupoalbumartistaEntity> get(@PathVariable Long id) {
+        return new ResponseEntity<GrupoalbumartistaEntity>(oGrupoalbumartistaService.get(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oGrupoalbumartistaService.delete(id), HttpStatus.OK);

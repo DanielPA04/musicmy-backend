@@ -41,6 +41,11 @@ public class Artista {
         return new ResponseEntity<Long>(oArtistaService.count(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ArtistaEntity> get(@PathVariable Long id) {
+        return new ResponseEntity<ArtistaEntity>(oArtistaService.get(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oArtistaService.delete(id), HttpStatus.OK);

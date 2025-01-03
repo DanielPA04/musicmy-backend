@@ -99,27 +99,27 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
     }
 
     @Override
-    public ArtistaEntity create(ArtistaEntity oUsuarioEntity) {
-        return oArtistaRepository.save(oUsuarioEntity);
+    public ArtistaEntity create(ArtistaEntity oArtistaEntity) {
+        return oArtistaRepository.save(oArtistaEntity);
     }
 
     @Override
-    public ArtistaEntity update(ArtistaEntity oUsuarioEntity) {
-        ArtistaEntity oArtistaEntityFromDatabase = oArtistaRepository.findById(oUsuarioEntity.getId()).get();
-        if (oUsuarioEntity.getNombre() != null) {
-            oArtistaEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
+    public ArtistaEntity update(ArtistaEntity oArtistaEntity) {
+        ArtistaEntity oArtistaEntityFromDatabase = oArtistaRepository.findById(oArtistaEntity.getId()).get();
+        if (oArtistaEntity.getNombre() != null) {
+            oArtistaEntityFromDatabase.setNombre(oArtistaEntity.getNombre());
         }
-        if (oUsuarioEntity.getNombreReal() != null) {
-            oArtistaEntityFromDatabase.setNombreReal(oUsuarioEntity.getNombreReal());
+        if (oArtistaEntity.getNombreReal() != null) {
+            oArtistaEntityFromDatabase.setNombreReal(oArtistaEntity.getNombreReal());
         }
-        if (oUsuarioEntity.getDescripcion() != null) {
-            oArtistaEntityFromDatabase.setDescripcion(oUsuarioEntity.getDescripcion());
+        if (oArtistaEntity.getDescripcion() != null) {
+            oArtistaEntityFromDatabase.setDescripcion(oArtistaEntity.getDescripcion());
         }
-        if (oUsuarioEntity.getSpotify() != null) {
-            oArtistaEntityFromDatabase.setSpotify(oUsuarioEntity.getSpotify());
+        if (oArtistaEntity.getSpotify() != null) {
+            oArtistaEntityFromDatabase.setSpotify(oArtistaEntity.getSpotify());
         }
-        if (oUsuarioEntity.getImg() != null) {
-            oArtistaEntityFromDatabase.setImg(oUsuarioEntity.getImg());
+        if (oArtistaEntity.getImg() != null) {
+            oArtistaEntityFromDatabase.setImg(oArtistaEntity.getImg());
         }
         return oArtistaRepository.save(oArtistaEntityFromDatabase);
 

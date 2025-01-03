@@ -96,30 +96,30 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
     }
 
     @Override
-    public AlbumEntity create(AlbumEntity oUsuarioEntity) {
-        return oAlbumRepository.save(oUsuarioEntity);
+    public AlbumEntity create(AlbumEntity oAlbumEntity) {
+        return oAlbumRepository.save(oAlbumEntity);
     }
 
     @Override
-    public AlbumEntity update(AlbumEntity oUsuarioEntity) {
-        AlbumEntity oAlbumEntityFromDatabase = oAlbumRepository.findById(oUsuarioEntity.getId()).get();
-        if (oUsuarioEntity.getNombre() != null) {
-            oAlbumEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
+    public AlbumEntity update(AlbumEntity oAlbumEntity) {
+        AlbumEntity oAlbumEntityFromDatabase = oAlbumRepository.findById(oAlbumEntity.getId()).get();
+        if (oAlbumEntity.getNombre() != null) {
+            oAlbumEntityFromDatabase.setNombre(oAlbumEntity.getNombre());
         }
-        if (oUsuarioEntity.getFecha() != null) {
-            oAlbumEntityFromDatabase.setFecha(oUsuarioEntity.getFecha());
+        if (oAlbumEntity.getFecha() != null) {
+            oAlbumEntityFromDatabase.setFecha(oAlbumEntity.getFecha());
         }
-        if (oUsuarioEntity.getGenero() != null) {
-            oAlbumEntityFromDatabase.setGenero(oUsuarioEntity.getGenero());
+        if (oAlbumEntity.getGenero() != null) {
+            oAlbumEntityFromDatabase.setGenero(oAlbumEntity.getGenero());
         }
-        if (oUsuarioEntity.getDescripcion() != null) {
-            oAlbumEntityFromDatabase.setDescripcion(oUsuarioEntity.getDescripcion());
+        if (oAlbumEntity.getDescripcion() != null) {
+            oAlbumEntityFromDatabase.setDescripcion(oAlbumEntity.getDescripcion());
         }
-        if (oUsuarioEntity.getDiscografica() != null) {
-            oAlbumEntityFromDatabase.setDiscografica(oUsuarioEntity.getDiscografica());
+        if (oAlbumEntity.getDiscografica() != null) {
+            oAlbumEntityFromDatabase.setDiscografica(oAlbumEntity.getDiscografica());
         }
-        if (oUsuarioEntity.getImg() != null) {
-            oAlbumEntityFromDatabase.setImg(oUsuarioEntity.getImg());
+        if (oAlbumEntity.getImg() != null) {
+            oAlbumEntityFromDatabase.setImg(oAlbumEntity.getImg());
         }
         return oAlbumRepository.save(oAlbumEntityFromDatabase);
 

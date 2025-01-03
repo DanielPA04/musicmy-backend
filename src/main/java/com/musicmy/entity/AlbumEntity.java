@@ -1,12 +1,8 @@
 package com.musicmy.entity;
 
 import java.time.LocalDate;
-import java.util.Base64;
 import java.sql.Blob;
-import java.sql.SQLException;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

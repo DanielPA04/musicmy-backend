@@ -59,17 +59,22 @@ public class Album {
         return new ResponseEntity<Long>(oAlbumService.count(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AlbumEntity> get(@PathVariable Long id) {
+        return new ResponseEntity<AlbumEntity>(oAlbumService.get(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oAlbumService.delete(id), HttpStatus.OK);
     }
 
-    @PutMapping("")
+    @PostMapping("")
     public ResponseEntity<AlbumEntity> create(@RequestBody AlbumEntity AlbumEntity) {
         return new ResponseEntity<AlbumEntity>(oAlbumService.create(AlbumEntity), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PutMapping("")
     public ResponseEntity<AlbumEntity> update(@RequestBody AlbumEntity AlbumEntity) {
         return new ResponseEntity<AlbumEntity>(oAlbumService.update(AlbumEntity), HttpStatus.OK);
     }

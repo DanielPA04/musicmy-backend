@@ -8,10 +8,13 @@ import jakarta.validation.constraints.Size;
 
 import java.sql.Blob;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 
+@JsonPropertyOrder({ "id", "nombre", "nombreReal", "descripcion", "spotify", "img", "grupoalbumartistas" })
 @Entity
 @Table(name = "artista")
 public class ArtistaEntity {
@@ -85,6 +88,10 @@ public class ArtistaEntity {
 
     public void setImg(Blob img) {
         this.img = img;
+    }
+
+    public int getGrupoalbumartistas() {
+        return grupoalbumartistas.size();
     }
 
 }

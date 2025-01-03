@@ -70,8 +70,8 @@ public class GrupoalbumartistaService implements ServiceInterface<Grupoalbumarti
     }
 
     @Override
-    public GrupoalbumartistaEntity create(GrupoalbumartistaEntity oUsuarioEntity) {
-        return oGrupoalbumartistaRepository.save(oUsuarioEntity);
+    public GrupoalbumartistaEntity create(GrupoalbumartistaEntity oGrupoalbumartistaEntity) {
+        return oGrupoalbumartistaRepository.save(oGrupoalbumartistaEntity);
     }
 
     @Override

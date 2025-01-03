@@ -18,56 +18,55 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import com.musicmy.entity.ArtistaEntity;
-import com.musicmy.service.ArtistaService;
-
+import com.musicmy.entity.GrupoalbumartistaEntity;
+import com.musicmy.service.GrupoalbumartistaService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/artista")
-public class Artista {
+@RequestMapping("/grupoalbumartista")
+public class Grupoalbumartista {
     @Autowired
-    ArtistaService oArtistaService;
+    GrupoalbumartistaService oGrupoalbumartistaService;
 
     @GetMapping("")
-    public ResponseEntity<Page<ArtistaEntity>> getPage(
+    public ResponseEntity<Page<GrupoalbumartistaEntity>> getPage(
             Pageable oPageable,
             @RequestParam Optional<String> filter) {
-        return new ResponseEntity<Page<ArtistaEntity>>(oArtistaService.getPage(oPageable, filter), HttpStatus.OK);
+        return new ResponseEntity<Page<GrupoalbumartistaEntity>>(oGrupoalbumartistaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
-        return new ResponseEntity<Long>(oArtistaService.count(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oGrupoalbumartistaService.count(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArtistaEntity> get(@PathVariable Long id) {
-        return new ResponseEntity<ArtistaEntity>(oArtistaService.get(id), HttpStatus.OK);
+    public ResponseEntity<GrupoalbumartistaEntity> get(@PathVariable Long id) {
+        return new ResponseEntity<GrupoalbumartistaEntity>(oGrupoalbumartistaService.get(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
-        return new ResponseEntity<Long>(oArtistaService.delete(id), HttpStatus.OK);
+        return new ResponseEntity<Long>(oGrupoalbumartistaService.delete(id), HttpStatus.OK);
     }
 
     @PutMapping("")
-    public ResponseEntity<ArtistaEntity> create(@RequestBody ArtistaEntity ArtistaEntity) {
-        return new ResponseEntity<ArtistaEntity>(oArtistaService.create(ArtistaEntity), HttpStatus.OK);
+    public ResponseEntity<GrupoalbumartistaEntity> create(@RequestBody GrupoalbumartistaEntity GrupoalbumartistaEntity) {
+        return new ResponseEntity<GrupoalbumartistaEntity>(oGrupoalbumartistaService.create(GrupoalbumartistaEntity), HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity<ArtistaEntity> update(@RequestBody ArtistaEntity ArtistaEntity) {
-        return new ResponseEntity<ArtistaEntity>(oArtistaService.update(ArtistaEntity), HttpStatus.OK);
+    public ResponseEntity<GrupoalbumartistaEntity> update(@RequestBody GrupoalbumartistaEntity GrupoalbumartistaEntity) {
+        return new ResponseEntity<GrupoalbumartistaEntity>(oGrupoalbumartistaService.update(GrupoalbumartistaEntity), HttpStatus.OK);
     }
 
     @PutMapping("/random/{cantidad}")
     public ResponseEntity<Long> create(@PathVariable Long cantidad) {
-        return new ResponseEntity<Long>(oArtistaService.randomCreate(cantidad), HttpStatus.OK);
+        return new ResponseEntity<Long>(oGrupoalbumartistaService.randomCreate(cantidad), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
-        return new ResponseEntity<Long>(oArtistaService.deleteAll(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oGrupoalbumartistaService.deleteAll(), HttpStatus.OK);
     }
 }

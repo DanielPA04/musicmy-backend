@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +22,7 @@ public class Database {
     @Autowired
     DatabaseService oDatabaseService;
 
-    @GetMapping("/fill")
+    @PostMapping("/fill")
     public ResponseEntity<Long> fill() {
         return new ResponseEntity<Long>(oDatabaseService.fill(), HttpStatus.OK);
     }

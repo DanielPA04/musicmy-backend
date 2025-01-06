@@ -1,7 +1,6 @@
 package com.musicmy.api;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
 import com.musicmy.entity.GrupoalbumartistaEntity;
 import com.musicmy.service.GrupoalbumartistaService;
 
@@ -50,17 +48,17 @@ public class Grupoalbumartista {
         return new ResponseEntity<Long>(oGrupoalbumartistaService.delete(id), HttpStatus.OK);
     }
 
-    @PutMapping("")
+    @PostMapping("")
     public ResponseEntity<GrupoalbumartistaEntity> create(@RequestBody GrupoalbumartistaEntity GrupoalbumartistaEntity) {
         return new ResponseEntity<GrupoalbumartistaEntity>(oGrupoalbumartistaService.create(GrupoalbumartistaEntity), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PutMapping("")
     public ResponseEntity<GrupoalbumartistaEntity> update(@RequestBody GrupoalbumartistaEntity GrupoalbumartistaEntity) {
         return new ResponseEntity<GrupoalbumartistaEntity>(oGrupoalbumartistaService.update(GrupoalbumartistaEntity), HttpStatus.OK);
     }
 
-    @PutMapping("/random/{cantidad}")
+    @PostMapping("/random/{cantidad}")
     public ResponseEntity<Long> create(@PathVariable Long cantidad) {
         return new ResponseEntity<Long>(oGrupoalbumartistaService.randomCreate(cantidad), HttpStatus.OK);
     }

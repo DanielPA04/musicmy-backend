@@ -1,7 +1,6 @@
 package com.musicmy.api;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
 import com.musicmy.entity.ArtistaEntity;
 import com.musicmy.service.ArtistaService;
 
@@ -51,17 +49,17 @@ public class Artista {
         return new ResponseEntity<Long>(oArtistaService.delete(id), HttpStatus.OK);
     }
 
-    @PutMapping("")
+    @PostMapping("")
     public ResponseEntity<ArtistaEntity> create(@RequestBody ArtistaEntity ArtistaEntity) {
         return new ResponseEntity<ArtistaEntity>(oArtistaService.create(ArtistaEntity), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PutMapping("")
     public ResponseEntity<ArtistaEntity> update(@RequestBody ArtistaEntity ArtistaEntity) {
         return new ResponseEntity<ArtistaEntity>(oArtistaService.update(ArtistaEntity), HttpStatus.OK);
     }
 
-    @PutMapping("/random/{cantidad}")
+    @PostMapping("/random/{cantidad}")
     public ResponseEntity<Long> create(@PathVariable Long cantidad) {
         return new ResponseEntity<Long>(oArtistaService.randomCreate(cantidad), HttpStatus.OK);
     }

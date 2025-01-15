@@ -3,19 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: database:3306
--- Tiempo de generación: 07-01-2025 a las 12:22:36
+-- Tiempo de generación: 15-01-2025 a las 09:42:12
 -- Versión del servidor: 8.4.2
 -- Versión de PHP: 8.2.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `musicmy`
@@ -103,6 +97,7 @@ CREATE TABLE `usuario` (
   `fecha` date DEFAULT NULL,
   `descripcion` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `mail` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `website` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `idTipoUsuario` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
@@ -200,7 +195,3 @@ ALTER TABLE `grupoalbumartista`
   ADD CONSTRAINT `grupoalbumartista_ibfk_1` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `grupoalbumartista_ibfk_2` FOREIGN KEY (`idArtista`) REFERENCES `artista` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -9,13 +9,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "tipousuario")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class TipousuarioEntity {
@@ -28,5 +26,13 @@ public class TipousuarioEntity {
 
     @OneToMany(mappedBy = "tipousuario", fetch = FetchType.LAZY)
     private java.util.List<UsuarioEntity> usuarios;
+
+    public TipousuarioEntity() {
+        this.usuarios = new java.util.ArrayList<>();
+    }
+
+    public TipousuarioEntity(String nombre) {
+        this.nombre = nombre;
+    }
     
 }

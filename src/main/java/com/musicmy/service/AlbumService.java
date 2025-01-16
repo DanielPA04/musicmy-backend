@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.musicmy.entity.AlbumEntity;
 import com.musicmy.repository.AlbumRepository;
 
@@ -16,6 +15,8 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     @Autowired
     private AlbumRepository oAlbumRepository;
+
+   
 
     @Autowired
     private RandomService oRandomService;

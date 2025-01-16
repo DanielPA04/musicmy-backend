@@ -57,7 +57,7 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
         for (int i = 0; i < cantidad; i++) {
             ArtistaEntity oArtistaEntity = new ArtistaEntity();
             oArtistaEntity.setNombre(nombres[oRandomService.getRandomInt(0, nombres.length - 1)]);
-            oArtistaEntity.setNombreReal(nombresReales[oRandomService.getRandomInt(0, nombresReales.length - 1)]);
+            oArtistaEntity.setNombrereal(nombresReales[oRandomService.getRandomInt(0, nombresReales.length - 1)]);
             oArtistaEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
             oArtistaEntity.setSpotify(spotify[oRandomService.getRandomInt(0, spotify.length - 1)]);
             oArtistaEntity.setImg(null);
@@ -75,7 +75,7 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
     public Page<ArtistaEntity> getPage(Pageable oPageable, Optional<String> filter) {
         if (filter.isPresent()) {
             return oArtistaRepository
-                    .findByNombreContainingOrNombreRealContainingOrDescripcionContaining(
+                    .findByNombreContainingOrNombrerealContainingOrDescripcionContaining(
                             filter.get(), filter.get(), filter.get(), oPageable);
         } else {
             return oArtistaRepository.findAll(oPageable);
@@ -109,8 +109,8 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
         if (oArtistaEntity.getNombre() != null) {
             oArtistaEntityFromDatabase.setNombre(oArtistaEntity.getNombre());
         }
-        if (oArtistaEntity.getNombreReal() != null) {
-            oArtistaEntityFromDatabase.setNombreReal(oArtistaEntity.getNombreReal());
+        if (oArtistaEntity.getNombrereal() != null) {
+            oArtistaEntityFromDatabase.setNombrereal(oArtistaEntity.getNombrereal());
         }
         if (oArtistaEntity.getDescripcion() != null) {
             oArtistaEntityFromDatabase.setDescripcion(oArtistaEntity.getDescripcion());

@@ -8,6 +8,6 @@ import com.musicmy.entity.ArtistaEntity;
 
 public interface ArtistaRepository extends JpaRepository<ArtistaEntity, Long> {
 
-    Page<ArtistaEntity> findByNombreContainingOrNombreRealContainingOrDescripcionContaining(
+    Page<ArtistaEntity> findByNombreContainingOrNombrerealContainingOrDescripcionContaining(
             String filter1, String filter2, String filter3, Pageable oPageable);
 }

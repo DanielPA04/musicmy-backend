@@ -1,6 +1,9 @@
 package com.musicmy.entity;
 
 import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,13 +16,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "usuario")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class UsuarioEntity {
@@ -29,30 +30,31 @@ public class UsuarioEntity {
 
     private String nombre;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fecha;
 
     private String descripcion;
 
     @Email
-    private String email;
+    private String mail;
 
     private String password;
 
     private String website;
 
-     @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
-    @JoinColumn(name = "idTipoUsuario")
+    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @JoinColumn(name = "idtipousuario")
     private TipousuarioEntity tipousuario;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private java.util.List<ResenyaEntity> resenyas;
 
+    public UsuarioEntity() {
+        this.resenyas = new java.util.ArrayList<>();
+    }
 
-    
+    public int getResenyas() {
+        return this.resenyas.size();
+    }
 
-
-
-
- 
 }
-

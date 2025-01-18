@@ -77,10 +77,9 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
     @Override
     public Page<ResenyaEntity> getPage(Pageable oPageable, Optional<String> filter) {
         if (filter.isPresent()) {
-            // return oResenyaRepository
-            // .findByNombreContainingOrGeneroContainingOrDescripcionContainingOrDiscograficaContaining(
-            // filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
-            return oResenyaRepository.findAll(oPageable);
+            return oResenyaRepository
+                    .findByNotaContainingOrDescripcionContainingOrWebsiteContaining(
+                            filter.get(), filter.get(), filter.get(), oPageable);
         } else {
             return oResenyaRepository.findAll(oPageable);
         }
@@ -110,7 +109,7 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
     @Override
     public ResenyaEntity update(ResenyaEntity oResenyaEntity) {
         ResenyaEntity oResenyaEntityFromDatabase = oResenyaRepository.findById(oResenyaEntity.getId()).get();
-        if (oResenyaEntity.getNota() != null)  {
+        if (oResenyaEntity.getNota() != null) {
             oResenyaEntityFromDatabase.setNota(oResenyaEntity.getNota());
         }
         if (oResenyaEntity.getDescripcion() != null) {

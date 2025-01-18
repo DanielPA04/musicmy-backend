@@ -36,10 +36,9 @@ public class TipousuarioService implements ServiceInterface<TipousuarioEntity> {
     @Override
     public Page<TipousuarioEntity> getPage(Pageable oPageable, Optional<String> filter) {
         if (filter.isPresent()) {
-            // return oTipousuarioRepository
-            // .findByNombreContainingOrGeneroContainingOrDescripcionContainingOrDiscograficaContaining(
-            // filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
-            return oTipousuarioRepository.findAll(oPageable);
+             return oTipousuarioRepository
+             .findByNombreContaining(
+             filter.get(), oPageable);
         } else {
             return oTipousuarioRepository.findAll(oPageable);
         }

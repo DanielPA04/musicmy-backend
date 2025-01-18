@@ -36,7 +36,7 @@ public class UsuarioEntity {
     private String descripcion;
 
     @Email
-    private String mail;
+    private String email;
 
     private String password;
 

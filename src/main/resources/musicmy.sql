@@ -96,7 +96,7 @@ CREATE TABLE `usuario` (
   `nombre` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `descripcion` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
-  `mail` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `website` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `idTipoUsuario` int DEFAULT NULL

@@ -27,7 +27,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             "Ingeniero de software.",
             "Profesora de matemáticas."
     };
-    String[] mails = { "juan@example.com", "maria@example.com", "carlos@example.com", "ana@example.com" };
+    String[] emails = { "juan@example.com", "maria@example.com", "carlos@example.com", "ana@example.com" };
     String[] websites = { "https://juan.com", "https://maria.com", "https://carlos.com", "https://ana.com" };
 
     @Override
@@ -36,7 +36,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             UsuarioEntity oUsuarioEntity = new UsuarioEntity();
             oUsuarioEntity.setNombre(nombres[oRandomService.getRandomInt(0, nombres.length - 1)]);
             oUsuarioEntity.setFecha(LocalDate.parse(fechas[oRandomService.getRandomInt(0, fechas.length - 1)]));
-            oUsuarioEntity.setMail(mails[oRandomService.getRandomInt(0, mails.length - 1)]);
+            oUsuarioEntity.setEmail(emails[oRandomService.getRandomInt(0, emails.length - 1)]);
             oUsuarioEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
             oUsuarioEntity.setWebsite(websites[oRandomService.getRandomInt(0, websites.length - 1)]);
             oUsuarioRepository.save(oUsuarioEntity);
@@ -52,10 +52,9 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     @Override
     public Page<UsuarioEntity> getPage(Pageable oPageable, Optional<String> filter) {
         if (filter.isPresent()) {
-            // return oUsuarioRepository
-            // .findByNombreContainingOrGeneroContainingOrDescripcionContainingOrDiscograficaContaining(
-            // filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
-            return oUsuarioRepository.findAll(oPageable);
+            return oUsuarioRepository
+                    .findByNombreContainingOrEmailContainingOrWebsiteContaining(
+                            filter.get(), filter.get(), filter.get(), oPageable);
         } else {
             return oUsuarioRepository.findAll(oPageable);
         }

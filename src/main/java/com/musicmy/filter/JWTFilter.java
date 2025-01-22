@@ -30,7 +30,7 @@ public class JWTFilter implements Filter {
 
         if ("OPTIONS".equals((request).getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
-            return;
+            oFilterChain.doFilter(oServletRequest, oServletResponse);
         }
         // Si no va poner else
         String sToken = request.getHeader("Authorization");

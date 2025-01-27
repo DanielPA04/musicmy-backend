@@ -20,5 +20,6 @@ public class AlbumDTO {
     private String discografica;
     private String imgBase64;
     private int grupoalbumartistas;
+    private int resenyas;
 
 }

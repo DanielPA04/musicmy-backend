@@ -48,5 +48,9 @@ public class ArtistaEntity {
         this.grupoalbumartistas = new java.util.ArrayList<>();
     }
 
+    public int getGrupoalbumartistas() {
+        return this.grupoalbumartistas.size();
+    }
+
 
 }

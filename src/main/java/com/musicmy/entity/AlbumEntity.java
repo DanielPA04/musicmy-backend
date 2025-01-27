@@ -53,10 +53,11 @@ public class AlbumEntity {
     private java.util.List<GrupoalbumartistaEntity> grupoalbumartistas;
 
     @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
-    private java.util.List<ResenyaEntity> resenya;
+    private java.util.List<ResenyaEntity> resenyas;
 
     public AlbumEntity() {
         this.grupoalbumartistas = new java.util.ArrayList<>();
+        this.resenyas = new java.util.ArrayList<>();
     }
 
     public String getImgBase64() {
@@ -80,6 +81,7 @@ public class AlbumEntity {
         dto.setDescripcion(albumEntity.getDescripcion());
         dto.setDiscografica(albumEntity.getDiscografica());
         dto.setGrupoalbumartistas(albumEntity.getGrupoalbumartistas());
+        dto.setResenyas(albumEntity.getResenyas());
         if (albumEntity.getImg() != null) {
             try (InputStream is = albumEntity.getImg().getBinaryStream()) {
                 byte[] bytes = is.readAllBytes();
@@ -119,8 +121,8 @@ public class AlbumEntity {
         return grupoalbumartistas.size();
     }
 
-    public int getResenya() {
-        return resenya.size();
+    public int getResenyas() {
+        return resenyas.size();
     }
 
 }

@@ -74,9 +74,10 @@ public class Album {
     }
 
     @PostMapping("")
-    public ResponseEntity<AlbumEntity> create(@RequestBody AlbumEntity AlbumEntity) {
-        return new ResponseEntity<AlbumEntity>(oAlbumService.create(AlbumEntity), HttpStatus.OK);
-    }
+    public ResponseEntity<AlbumEntity> create(@RequestBody AlbumDTO oAlbumDTO) {
+        AlbumEntity oAlbumEntity = AlbumEntity.convertToEntity(oAlbumDTO);
+        return new ResponseEntity<AlbumEntity>(oAlbumService.update(oAlbumEntity), HttpStatus.OK);
+        }
 
     @PostMapping("/img")
 public ResponseEntity<AlbumEntity> create(

@@ -48,8 +48,13 @@ public class AuthService {
     }
 
     public UsuarioEntity getUsuarioFromToken() {
+        if (request.getAttribute("email") == null) {
+            //TODO: return throw exception
+            return null;
+        } else {
         String email = request.getAttribute("email").toString();
         return oUsuarioRepository.findByEmail(email).get();
+        }
     }
 
     public boolean isSessionActive() {

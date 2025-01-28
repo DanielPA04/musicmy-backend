@@ -2,22 +2,15 @@ package com.musicmy.api;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.musicmy.dto.AlbumDTO;
 import com.musicmy.entity.AlbumEntity;
 import com.musicmy.service.AlbumService;
-
 import java.io.IOException;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
-
-import javax.sql.rowset.serial.SerialBlob;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
-
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/album")
@@ -42,30 +32,20 @@ public class Album {
     AlbumService oAlbumService;
 
     @GetMapping("")
-    public ResponseEntity<Page<AlbumDTO>> getPage(
+    public ResponseEntity<Page<AlbumEntity>> getPage(
             Pageable oPageable,
             @RequestParam Optional<String> filter) {
-    
-        Page<AlbumEntity> albumEntities = oAlbumService.getPage(oPageable, filter);
-    
-        Page<AlbumDTO> albumDTOs = albumEntities.map(AlbumEntity::convertToDTO);
-    
-        return new ResponseEntity<>(albumDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(oAlbumService.getPage(oPageable, filter), HttpStatus.OK);
     }
-    
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oAlbumService.count(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlbumDTO> get(@PathVariable Long id) {
-        AlbumEntity albumEntity = oAlbumService.get(id);
-        if (albumEntity == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        AlbumDTO albumDTO = AlbumEntity.convertToDTO(albumEntity);
-        return new ResponseEntity<>(albumDTO, HttpStatus.OK);
+    public ResponseEntity<AlbumEntity> get(@PathVariable Long id) {
+        return new ResponseEntity<>(oAlbumService.get(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -74,40 +54,36 @@ public class Album {
     }
 
     @PostMapping("")
-    public ResponseEntity<AlbumEntity> create(@RequestBody AlbumDTO oAlbumDTO) {
-        AlbumEntity oAlbumEntity = AlbumEntity.convertToEntity(oAlbumDTO);
-        return new ResponseEntity<AlbumEntity>(oAlbumService.update(oAlbumEntity), HttpStatus.OK);
-        }
+    public ResponseEntity<AlbumEntity> create(@RequestBody AlbumEntity oAlbumEntity) {
+        return new ResponseEntity<AlbumEntity>(oAlbumService.create(oAlbumEntity), HttpStatus.OK);
+    }
 
     @PostMapping("/img")
-public ResponseEntity<AlbumEntity> create(
-        @RequestParam("nombre") String nombre,
-        @RequestParam("fecha") String fecha,
-        @RequestParam("genero") String genero,
-        @RequestParam("descripcion") String descripcion,
-        @RequestParam("discografica") String discografica,
-        @RequestParam("img") MultipartFile img) {
+    public ResponseEntity<AlbumEntity> create(
+            @RequestParam("nombre") String nombre,
+            @RequestParam("fecha") String fecha,
+            @RequestParam("genero") String genero,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("discografica") String discografica,
+            @RequestParam("img") MultipartFile img) {
 
-    try {
+        try {
 
-        Blob imageBlob = new SerialBlob(img.getBytes()); 
+            AlbumEntity albumEntity = new AlbumEntity();
+            albumEntity.setNombre(nombre);
+            albumEntity.setFecha(LocalDate.parse(fecha));
+            albumEntity.setGenero(genero);
+            albumEntity.setDescripcion(descripcion);
+            albumEntity.setDiscografica(discografica);
+            albumEntity.setImg(img.getBytes());
+            AlbumEntity savedAlbum = oAlbumService.create(albumEntity);
+            return new ResponseEntity<>(savedAlbum, HttpStatus.OK);
 
-        AlbumEntity albumEntity = new AlbumEntity();
-        albumEntity.setNombre(nombre);
-        albumEntity.setFecha(LocalDate.parse(fecha));
-        albumEntity.setGenero(genero);
-        albumEntity.setDescripcion(descripcion);
-        albumEntity.setDiscografica(discografica);
-        albumEntity.setImg(imageBlob); 
-
-        AlbumEntity savedAlbum = oAlbumService.create(albumEntity);
-        return new ResponseEntity<>(savedAlbum, HttpStatus.OK);
-
-    } catch (IOException | SQLException e) {
-        e.printStackTrace();
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-}
 
     @PutMapping("")
     public ResponseEntity<AlbumEntity> update(@RequestBody AlbumEntity AlbumEntity) {
@@ -115,10 +91,35 @@ public ResponseEntity<AlbumEntity> create(
     }
 
     @PutMapping("/img")
-    public ResponseEntity<AlbumEntity> updateDTO(@RequestBody AlbumDTO oAlbumDTO) {
-        AlbumEntity oAlbumEntity = AlbumEntity.convertToEntity(oAlbumDTO);
-        return new ResponseEntity<AlbumEntity>(oAlbumService.update(oAlbumEntity), HttpStatus.OK);
-    }
+    public ResponseEntity<AlbumEntity> update(
+        @RequestParam("id") Long id,
+        @RequestParam("nombre") String nombre,
+        @RequestParam("fecha") String fecha,
+        @RequestParam("genero") String genero,
+        @RequestParam("descripcion") String descripcion,
+        @RequestParam("discografica") String discografica,
+        @RequestParam("img") MultipartFile img) {
+
+            try {
+
+                AlbumEntity albumEntity = new AlbumEntity();
+                albumEntity.setId(id);
+                albumEntity.setNombre(nombre);
+                albumEntity.setFecha(LocalDate.parse(fecha));
+                albumEntity.setGenero(genero);
+                albumEntity.setDescripcion(descripcion);
+                albumEntity.setDiscografica(discografica);
+                albumEntity.setImg(img.getBytes());
+                AlbumEntity savedAlbum = oAlbumService.update(albumEntity);
+                return new ResponseEntity<>(savedAlbum, HttpStatus.OK);
+    
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        }
+
 
     @PostMapping("/random/{cantidad}")
     public ResponseEntity<Long> create(@PathVariable Long cantidad) {
@@ -129,5 +130,15 @@ public ResponseEntity<AlbumEntity> create(
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oAlbumService.deleteAll(), HttpStatus.OK);
     }
-    
+
+    @GetMapping("/{id}/img")
+    public ResponseEntity<byte[]> obtenerFotoUsuario(@PathVariable Long id) {
+        AlbumEntity album = oAlbumService.get(id);
+       
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .body(album.getImg());
+    }
 }
+
+

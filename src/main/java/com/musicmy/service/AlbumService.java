@@ -1,5 +1,7 @@
 package com.musicmy.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -15,8 +17,6 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     @Autowired
     private AlbumRepository oAlbumRepository;
-
-   
 
     @Autowired
     private RandomService oRandomService;
@@ -58,7 +58,20 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
             oAlbumEntity.setGenero(generos[oRandomService.getRandomInt(0, generos.length - 1)]);
             oAlbumEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
             oAlbumEntity.setDiscografica(discograficas[oRandomService.getRandomInt(0, discograficas.length - 1)]);
-            oAlbumEntity.setImg(null);
+
+            InputStream imageStream = getClass().getClassLoader().getResourceAsStream("img/album.jpg");
+            if (imageStream != null) {
+                byte[] imageBytes;
+                try {
+                    imageBytes = imageStream.readAllBytes();
+                    oAlbumEntity.setImg(imageBytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Imagen no encontrada en el classpath.");
+            }
+
             oAlbumRepository.save(oAlbumEntity);
         }
         return oAlbumRepository.count();

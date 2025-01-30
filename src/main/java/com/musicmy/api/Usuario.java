@@ -68,4 +68,9 @@ public class Usuario {
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oUsuarioService.deleteAll(), HttpStatus.OK);
     }
+
+    @GetMapping("/byemail/{email}")
+    public ResponseEntity<UsuarioEntity> getByEmail(@PathVariable String email) {
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.getByEmail(email), HttpStatus.OK);
+    }
 }

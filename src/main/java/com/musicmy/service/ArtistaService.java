@@ -19,37 +19,39 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
     @Autowired
     private RandomService oRandomService;
 
+    @Autowired
+    private AuthService oAuthService;
 
     String[] nombres = {
-        "Bad Bunny",
-        "Taylor Swift",
-        "Drake",
-        "Adele",
-        "Billie Eilish"
+            "Bad Bunny",
+            "Taylor Swift",
+            "Drake",
+            "Adele",
+            "Billie Eilish"
     };
-    
+
     String[] nombresReales = {
-        "Benito Antonio Martínez Ocasio",
-        "Taylor Alison Swift",
-        "Aubrey Drake Graham",
-        "Adele Laurie Blue Adkins",
-        "Billie Eilish Pirate Baird O'Connell"
+            "Benito Antonio Martínez Ocasio",
+            "Taylor Alison Swift",
+            "Aubrey Drake Graham",
+            "Adele Laurie Blue Adkins",
+            "Billie Eilish Pirate Baird O'Connell"
     };
-    
+
     String[] descripciones = {
-        "Cantante y rapero puertorriqueño, pionero del trap latino.",
-        "Cantante y compositora estadounidense conocida por su versatilidad.",
-        "Rapper y productor canadiense, un ícono del hip-hop contemporáneo.",
-        "Cantante británica famosa por su poderosa voz y baladas emotivas.",
-        "Cantante y compositora estadounidense, conocida por su estilo alternativo y minimalista."
+            "Cantante y rapero puertorriqueño, pionero del trap latino.",
+            "Cantante y compositora estadounidense conocida por su versatilidad.",
+            "Rapper y productor canadiense, un ícono del hip-hop contemporáneo.",
+            "Cantante británica famosa por su poderosa voz y baladas emotivas.",
+            "Cantante y compositora estadounidense, conocida por su estilo alternativo y minimalista."
     };
-    
+
     String[] spotify = {
-        "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X",
-        "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02",
-        "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
-        "https://open.spotify.com/artist/4dpARuHxo51G3z768sgnrY",
-        "https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH"
+            "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X",
+            "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02",
+            "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+            "https://open.spotify.com/artist/4dpARuHxo51G3z768sgnrY",
+            "https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH"
     };
 
     @Override
@@ -84,7 +86,11 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
 
     @Override
     public ArtistaEntity get(Long id) {
-        return oArtistaRepository.findById(id).get();
+        if (oAuthService.isAdministrador()) {
+            return oArtistaRepository.findById(id).get();
+        } else {
+            throw new UnsupportedOperationException("Not supported");
+        }
     }
 
     @Override

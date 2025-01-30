@@ -65,6 +65,10 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         return oUsuarioRepository.findById(id).get();
     }
 
+    public UsuarioEntity getByEmail(String email) {
+        return oUsuarioRepository.findByEmail(email).get();
+    }
+
     @Override
     public Long count() {
         return oUsuarioRepository.count();

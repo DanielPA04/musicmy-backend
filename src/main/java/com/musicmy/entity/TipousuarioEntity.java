@@ -34,5 +34,11 @@ public class TipousuarioEntity {
     public TipousuarioEntity(String nombre) {
         this.nombre = nombre;
     }
+
+    public int getUsuarios() {
+        return this.usuarios.size();
+    }
+
+
     
 }

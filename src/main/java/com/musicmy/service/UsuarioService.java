@@ -70,13 +70,21 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         } else if (oAuthService.isOneSelf(id)) {
             return oUsuarioRepository.findById(id).get();
         } else {
-            //TODO
+            // TODO
             throw new UnsupportedOperationException("Not supported");
         }
     }
 
     public UsuarioEntity getByEmail(String email) {
-        return oUsuarioRepository.findByEmail(email).get();
+        UsuarioEntity usuario = oUsuarioRepository.findByEmail(email).get();
+        if (oAuthService.isAdministrador()) {
+            return usuario;
+        } else if (oAuthService.isOneSelf(usuario.getId())) {
+            return usuario;
+        } else {
+            //TODO
+            throw new UnsupportedOperationException("Not supported");
+        }
     }
 
     @Override

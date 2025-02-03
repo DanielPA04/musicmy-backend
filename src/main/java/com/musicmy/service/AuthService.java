@@ -70,7 +70,7 @@ public class AuthService {
     }
 
     public boolean isOneSelf(Long id) {
-        return  getUsuarioFromToken().getId().equals(id); 
+        return getUsuarioFromToken().getId().equals(id); 
     }
 
     public String RestrictedArea() {

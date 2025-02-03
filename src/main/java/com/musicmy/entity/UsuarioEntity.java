@@ -3,6 +3,7 @@ package com.musicmy.entity;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,6 +39,7 @@ public class UsuarioEntity {
     @Email
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private String website;

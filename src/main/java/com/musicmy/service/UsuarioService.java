@@ -19,6 +19,9 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     @Autowired
     private RandomService oRandomService;
 
+    @Autowired
+    private AuthService oAuthService;
+
     String[] nombres = { "Juan", "María", "Carlos", "Ana" };
     String[] fechas = { "2000-01-01", "2000-01-02", "2000-01-03", "2000-01-04" };
     String[] descripciones = {
@@ -62,7 +65,14 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     @Override
     public UsuarioEntity get(Long id) {
-        return oUsuarioRepository.findById(id).get();
+        if (oAuthService.isAdministrador()) {
+            return oUsuarioRepository.findById(id).get();
+        } else if (oAuthService.isOneSelf(id)) {
+            return oUsuarioRepository.findById(id).get();
+        } else {
+            //TODO
+            throw new UnsupportedOperationException("Not supported");
+        }
     }
 
     public UsuarioEntity getByEmail(String email) {

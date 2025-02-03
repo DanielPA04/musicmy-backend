@@ -69,6 +69,10 @@ public class AuthService {
         return getUsuarioFromToken().getTipousuario().getId() == oTipousuarioRepository.findByNombre("Usuario").get().getId();
     }
 
+    public boolean isOneSelf(Long id) {
+        return  getUsuarioFromToken().getId().equals(id); 
+    }
+
     public String RestrictedArea() {
         if (request.getAttribute("email") == null) {
             return "No tienes permisos para acceder a esta zona";

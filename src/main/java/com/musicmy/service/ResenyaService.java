@@ -56,12 +56,16 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
 
         for (int i = 0; i < cantidad; i++) {
             ResenyaEntity oResenyaEntity = new ResenyaEntity();
+            oResenyaEntity.setId(i + 1L);
             oResenyaEntity.setNota(notas[oRandomService.getRandomInt(0, notas.length - 1)]);
             oResenyaEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
             oResenyaEntity.setFecha(fechas[oRandomService.getRandomInt(0, fechas.length - 1)]);
             oResenyaEntity.setWebsite(urls[oRandomService.getRandomInt(0, urls.length - 1)]);
+
             oResenyaEntity.setAlbum(oAlbumService.randomSelection());
+
             oResenyaEntity.setUsuario(oUsuarioService.randomSelection());
+
             oResenyaRepository.save(oResenyaEntity);
 
         }

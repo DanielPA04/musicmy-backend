@@ -2,6 +2,8 @@ package com.musicmy.service;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +41,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             UsuarioEntity oUsuarioEntity = new UsuarioEntity();
             oUsuarioEntity.setNombre(nombres[oRandomService.getRandomInt(0, nombres.length - 1)]);
             oUsuarioEntity.setFecha(LocalDate.parse(fechas[oRandomService.getRandomInt(0, fechas.length - 1)]));
-            oUsuarioEntity.setEmail(emails[oRandomService.getRandomInt(0, emails.length - 1)]);
+            oUsuarioEntity.setEmail(emails[oRandomService.getRandomInt(0, emails.length - 1)]+UUID.randomUUID().toString());
+            oUsuarioEntity.setPassword("10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f");
             oUsuarioEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
             oUsuarioEntity.setWebsite(websites[oRandomService.getRandomInt(0, websites.length - 1)]);
             oUsuarioRepository.save(oUsuarioEntity);

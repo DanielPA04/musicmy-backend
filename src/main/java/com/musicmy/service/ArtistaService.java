@@ -1,5 +1,6 @@
 package com.musicmy.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,12 +87,14 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
 
     @Override
     public ArtistaEntity get(Long id) {
-        if (oAuthService.isAdministrador()) {
             return oArtistaRepository.findById(id).get();
-        } else {
-            throw new UnsupportedOperationException("Not supported");
-        }
     }
+
+    public List<ArtistaEntity> getByIdAlbum(Long id) {
+        return oArtistaRepository.findByAlbumId(id).get();
+    }
+
+
 
     @Override
     public Long count() {

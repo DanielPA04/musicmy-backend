@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.musicmy.entity.UsuarioEntity;
+import com.musicmy.repository.TipousuarioRepository;
 import com.musicmy.repository.UsuarioRepository;
 
 @Service
@@ -20,6 +21,12 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     @Autowired
     private RandomService oRandomService;
+
+    @Autowired
+    private TipousuarioService oTipousuarioService;
+
+    @Autowired
+    private TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
     private AuthService oAuthService;
@@ -41,10 +48,13 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             UsuarioEntity oUsuarioEntity = new UsuarioEntity();
             oUsuarioEntity.setNombre(nombres[oRandomService.getRandomInt(0, nombres.length - 1)]);
             oUsuarioEntity.setFecha(LocalDate.parse(fechas[oRandomService.getRandomInt(0, fechas.length - 1)]));
-            oUsuarioEntity.setEmail(emails[oRandomService.getRandomInt(0, emails.length - 1)]+UUID.randomUUID().toString());
+            oUsuarioEntity
+                    .setEmail(emails[oRandomService.getRandomInt(0, emails.length - 1)] + UUID.randomUUID().toString());
             oUsuarioEntity.setPassword("10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f");
             oUsuarioEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
             oUsuarioEntity.setWebsite(websites[oRandomService.getRandomInt(0, websites.length - 1)]);
+            oUsuarioEntity.setTipousuario(oTipousuarioService
+                    .get((long) oRandomService.getRandomInt(0, (int) (oTipousuarioService.count() - 1))));
             oUsuarioRepository.save(oUsuarioEntity);
         }
         return oUsuarioRepository.count();
@@ -85,7 +95,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         } else if (oAuthService.isOneSelf(usuario.getId())) {
             return usuario;
         } else {
-            //TODO
+            // TODO
             throw new UnsupportedOperationException("Not supported");
         }
     }
@@ -103,8 +113,18 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     @Override
     public UsuarioEntity create(UsuarioEntity oUsuarioEntity) {
+        //TODO
+       
+        return Optional.ofNullable(oAuthService.isAdministrador() ? oUsuarioRepository.save(oUsuarioEntity) : null)
+        .orElseThrow(() -> new RuntimeException("Acceso denegado"));
+
+    }
+
+    public UsuarioEntity register(UsuarioEntity oUsuarioEntity) {
+        oUsuarioEntity.setTipousuario(oTipousuarioService.get(oTipousuarioRepository.findByNombre("Usuario").get().getId()));
         return oUsuarioRepository.save(oUsuarioEntity);
     }
+
 
     @Override
     public UsuarioEntity update(UsuarioEntity oUsuarioEntity) {
@@ -121,6 +141,10 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     public Long deleteAll() {
         oUsuarioRepository.deleteAll();
         return this.count();
+    }
+
+    public boolean checkIfEmailExists(String email){
+        return oUsuarioRepository.findByEmail(email).isPresent();
     }
 
 }

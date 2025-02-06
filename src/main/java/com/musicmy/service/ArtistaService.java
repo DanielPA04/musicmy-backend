@@ -87,14 +87,12 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
 
     @Override
     public ArtistaEntity get(Long id) {
-            return oArtistaRepository.findById(id).get();
+        return oArtistaRepository.findById(id).get();
     }
 
     public List<ArtistaEntity> getByIdAlbum(Long id) {
         return oArtistaRepository.findByAlbumId(id).get();
     }
-
-
 
     @Override
     public Long count() {
@@ -103,13 +101,23 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
 
     @Override
     public Long delete(Long id) {
-        oArtistaRepository.deleteById(id);
-        return 1L;
+        if (oAuthService.isAdministrador()) {
+            oArtistaRepository.deleteById(id);
+            return 1L;
+        } else {
+            // TODO
+            throw new UnsupportedOperationException("Not supported");
+        }
     }
 
     @Override
     public ArtistaEntity create(ArtistaEntity oArtistaEntity) {
-        return oArtistaRepository.save(oArtistaEntity);
+        if (oAuthService.isAdministrador()) {
+            return oArtistaRepository.save(oArtistaEntity);
+        } else {
+            // TODO
+            throw new UnsupportedOperationException("Not supported");
+        }
     }
 
     @Override

@@ -53,6 +53,10 @@ public class Usuario {
     public ResponseEntity<UsuarioEntity> create(@RequestBody UsuarioEntity UsuarioEntity) {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.create(UsuarioEntity), HttpStatus.OK);
     }
+    @PostMapping("/register")
+    public ResponseEntity<UsuarioEntity> register(@RequestBody UsuarioEntity UsuarioEntity) {
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.register(UsuarioEntity), HttpStatus.OK);
+    }
 
     @PutMapping("")
     public ResponseEntity<UsuarioEntity> update(@RequestBody UsuarioEntity UsuarioEntity) {
@@ -72,5 +76,10 @@ public class Usuario {
     @GetMapping("/byemail/{email}")
     public ResponseEntity<UsuarioEntity> getByEmail(@PathVariable String email) {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.getByEmail(email), HttpStatus.OK);
+    }
+
+    @GetMapping("/check/email/{email}")
+    public ResponseEntity<Boolean> checkEmailExists(@PathVariable String email) {
+        return new ResponseEntity<Boolean>(oUsuarioService.checkIfEmailExists(email), HttpStatus.OK);
     }
 }

@@ -48,6 +48,11 @@ public class Album {
         return new ResponseEntity<>(oAlbumService.get(id), HttpStatus.OK);
     }
 
+    @GetMapping("/media/{id}")
+    public ResponseEntity<Double> getMedia(@PathVariable Long id) {
+        return new ResponseEntity<Double>(oAlbumService.getNotaMedia(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oAlbumService.delete(id), HttpStatus.OK);

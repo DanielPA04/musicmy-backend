@@ -3,12 +3,10 @@ package com.musicmy.service;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.repository.TipousuarioRepository;
 import com.musicmy.repository.UsuarioRepository;
@@ -113,28 +111,67 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     @Override
     public UsuarioEntity create(UsuarioEntity oUsuarioEntity) {
-        //TODO
-       
+        // TODO
+
         return Optional.ofNullable(oAuthService.isAdministrador() ? oUsuarioRepository.save(oUsuarioEntity) : null)
-        .orElseThrow(() -> new RuntimeException("Acceso denegado"));
+                .orElseThrow(() -> new RuntimeException("Acceso denegado"));
 
     }
 
     public UsuarioEntity register(UsuarioEntity oUsuarioEntity) {
-        oUsuarioEntity.setTipousuario(oTipousuarioService.get(oTipousuarioRepository.findByNombre("Usuario").get().getId()));
+        oUsuarioEntity
+                .setTipousuario(oTipousuarioService.get(oTipousuarioRepository.findByNombre("Usuario").get().getId()));
         return oUsuarioRepository.save(oUsuarioEntity);
     }
 
-
     @Override
     public UsuarioEntity update(UsuarioEntity oUsuarioEntity) {
-        UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
-        if (oUsuarioEntity.getNombre() != null) {
-            oUsuarioEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
+        if (oAuthService.isOneSelf(oUsuarioEntity.getId()) || oAuthService.isAdministrador()) {
+            UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
+            if (oUsuarioEntity.getNombre() != null) {
+                oUsuarioEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
+            }
+            if (oUsuarioEntity.getFecha() != null) {
+                oUsuarioEntityFromDatabase.setFecha(oUsuarioEntity.getFecha());
+            }
+            if (oUsuarioEntity.getDescripcion() != null) {
+                oUsuarioEntityFromDatabase.setDescripcion(oUsuarioEntity.getDescripcion());
+            }
+
+            if (oAuthService.isAdministrador()) {
+                if (oUsuarioEntity.getPassword() != null) {
+                    oUsuarioEntityFromDatabase.setPassword(oUsuarioEntity.getPassword());
+                }
+                if (oUsuarioEntity.getEmail() != null) {
+                    oUsuarioEntityFromDatabase.setEmail(oUsuarioEntity.getEmail());
+                }
+            }
+            if (oUsuarioEntity.getWebsite() != null) {
+                oUsuarioEntityFromDatabase.setWebsite(oUsuarioEntity.getWebsite());
+            }
+            if (oUsuarioEntity.getTipousuario() != null) {
+                oUsuarioEntityFromDatabase.setTipousuario(oUsuarioEntity.getTipousuario());
+            }
+
+            return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
+        } else
+
+        {
+            // TODO
+            throw new UnsupportedOperationException("Not supported");
         }
 
-        return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
+    }
 
+    public Boolean changePassword(UsuarioEntity oUsuarioEntity) {
+        if (oAuthService.isOneSelf(oUsuarioEntity.getId())) {
+            UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
+            oUsuarioEntityFromDatabase.setPassword(oUsuarioEntity.getPassword());
+            oUsuarioRepository.save(oUsuarioEntityFromDatabase);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -143,7 +180,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         return this.count();
     }
 
-    public boolean checkIfEmailExists(String email){
+    public boolean checkIfEmailExists(String email) {
         return oUsuarioRepository.findByEmail(email).isPresent();
     }
 

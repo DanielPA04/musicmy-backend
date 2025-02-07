@@ -98,6 +98,10 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
         return oAlbumRepository.findById(id).get();
     }
 
+    public Double getNotaMedia(Long id) {
+        return oAlbumRepository.getNotaMedia(id).orElse(0.0);
+    }
+
     @Override
     public Long count() {
         return oAlbumRepository.count();

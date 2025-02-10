@@ -1,5 +1,7 @@
 package com.musicmy.api;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import com.musicmy.entity.AlbumEntity;
+import com.musicmy.entity.ArtistaEntity;
 import com.musicmy.entity.GrupoalbumartistaEntity;
 import com.musicmy.service.GrupoalbumartistaService;
 
@@ -66,5 +71,16 @@ public class Grupoalbumartista {
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oGrupoalbumartistaService.deleteAll(), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/artistas/{id}")
+    public List<ArtistaEntity> updateArtistasToAlbum(@RequestBody List<ArtistaEntity> artistas, @PathVariable Long id) {
+        return oGrupoalbumartistaService.updateArtistasToAlbum(artistas, id);
+    }
+
+    @PutMapping("/albumes/{id}")
+    public List<ArtistaEntity> updateAlbumesToArtista(@RequestBody List<AlbumEntity> albumes, @PathVariable Long id) {
+        return oGrupoalbumartistaService.updateAlbumesToArtista(albumes, id);
     }
 }

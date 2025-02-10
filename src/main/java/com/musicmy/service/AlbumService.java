@@ -3,6 +3,7 @@ package com.musicmy.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,10 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
     @Override
     public AlbumEntity get(Long id) {
         return oAlbumRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Album con el id " + id + " no encontrado"));
+    }
+
+    public List<AlbumEntity> getByIdArtista(Long id){
+        return oAlbumRepository.findByArtistaId(id).orElseThrow(() -> new ResourceNotFoundException("Album con el id " + id + " no encontrado"));
     }
 
     public Double getNotaMedia(Long id) {

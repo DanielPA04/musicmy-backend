@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.musicmy.entity.AlbumEntity;
+import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.repository.AlbumRepository;
 
 @Service
@@ -95,7 +96,7 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     @Override
     public AlbumEntity get(Long id) {
-        return oAlbumRepository.findById(id).get();
+        return oAlbumRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Album con el id " + id + " no encontrado"));
     }
 
     public Double getNotaMedia(Long id) {

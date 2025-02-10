@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.musicmy.entity.TipousuarioEntity;
+import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.TipousuarioRepository;
 
 @Service
@@ -18,13 +19,46 @@ public class TipousuarioService implements ServiceInterface<TipousuarioEntity> {
     @Autowired
     private RandomService oRandomService;
 
+    @Autowired
+    private AuthService oAuthService;
+
     @Override
     public Long randomCreate(Long cantidad) {
-
+        if (oAuthService.isAdministrador()) {
         this.create(new TipousuarioEntity("Administrador"));
         this.create(new TipousuarioEntity("Usuario"));
-
         return oTipousuarioRepository.count();
+    } else {
+        throw new UnauthorizedAccessException("No autorizado");
+    } 
+    }
+    
+    @Override
+    public TipousuarioEntity create(TipousuarioEntity oTipousuarioEntity) {
+        if (oAuthService.isAdministrador()) {
+            return oTipousuarioRepository.save(oTipousuarioEntity);
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
+        }
+    }
+    
+    @Override
+    public TipousuarioEntity update(TipousuarioEntity oTipousuarioEntity) {
+        if (oAuthService.isAdministrador()) {
+            return oTipousuarioRepository.save(oTipousuarioEntity);
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
+        }
+    }
+    
+    @Override
+    public Long delete(Long id) {
+        if (oAuthService.isAdministrador()) {
+            oTipousuarioRepository.deleteById(id);
+            return 1L;
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
+        }
     }
 
     @Override
@@ -54,33 +88,16 @@ public class TipousuarioService implements ServiceInterface<TipousuarioEntity> {
         return oTipousuarioRepository.count();
     }
 
-    @Override
-    public Long delete(Long id) {
-        oTipousuarioRepository.deleteById(id);
-        return 1L;
-    }
-
-    @Override
-    public TipousuarioEntity create(TipousuarioEntity oTipousuarioEntity) {
-        return oTipousuarioRepository.save(oTipousuarioEntity);
-    }
-
-    @Override
-    public TipousuarioEntity update(TipousuarioEntity oTipousuarioEntity) {
-        TipousuarioEntity oTipousuarioEntityFromDatabase = oTipousuarioRepository.findById(oTipousuarioEntity.getId())
-                .get();
-        if (oTipousuarioEntity.getNombre() != null) {
-            oTipousuarioEntityFromDatabase.setNombre(oTipousuarioEntity.getNombre());
-        }
-
-        return oTipousuarioRepository.save(oTipousuarioEntityFromDatabase);
-
-    }
+    
 
     @Override
     public Long deleteAll() {
+        if (oAuthService.isAdministrador()) {
         oTipousuarioRepository.deleteAll();
         return this.count();
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.musicmy.bean.LogindataBean;
 import com.musicmy.entity.UsuarioEntity;
+import com.musicmy.exception.NoSessionException;
 import com.musicmy.helper.JWTHelper;
 import com.musicmy.repository.TipousuarioRepository;
 import com.musicmy.repository.UsuarioRepository;
@@ -49,8 +50,7 @@ public class AuthService {
 
     public UsuarioEntity getUsuarioFromToken() {
         if (request.getAttribute("email") == null) {
-            //TODO: return throw exception
-            return null;
+            throw new NoSessionException("No hay session activa");
         } else {
         String email = request.getAttribute("email").toString();
         return oUsuarioRepository.findByEmail(email).get();

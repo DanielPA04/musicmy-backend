@@ -107,6 +107,8 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
 
     @Override
     public ResenyaEntity create(ResenyaEntity oResenyaEntity) {
+        oResenyaEntity.setAlbum(oAlbumService.get(oResenyaEntity.getAlbum().getId()));
+        oResenyaEntity.setUsuario(oUsuarioService.get(oResenyaEntity.getUsuario().getId()));
         oResenyaEntity.setFecha(LocalDate.now());
         return oResenyaRepository.save(oResenyaEntity);
     }

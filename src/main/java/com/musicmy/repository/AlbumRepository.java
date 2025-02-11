@@ -1,6 +1,7 @@
 package com.musicmy.repository;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -17,6 +18,10 @@ public interface AlbumRepository extends JpaRepository<AlbumEntity, Long> {
 
     @Query(value = "SELECT AVG(nota) FROM resenya WHERE idAlbum = :id", nativeQuery = true)
     Optional<Double> getNotaMedia(Long id);
+
+    @Query(value= "SELECT al.* FROM album al JOIN grupoalbumartista gaa ON al.id = gaa.idAlbum JOIN artista a ON gaa.idArtista = a.id WHERE a.id = :id", nativeQuery = true)
+    Optional<List<AlbumEntity>> findByArtistaId(Long id);
+
 
 
 }

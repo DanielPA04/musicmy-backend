@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.musicmy.entity.UsuarioEntity;
+import com.musicmy.exception.ResourceNotFoundException;
+import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.TipousuarioRepository;
 import com.musicmy.repository.UsuarioRepository;
 
@@ -60,29 +62,35 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     @Override
     public UsuarioEntity randomSelection() {
-        return oUsuarioRepository.findAll().get(oRandomService.getRandomInt(0, (int) oUsuarioRepository.count() - 1));
+        if (oAuthService.isAdministrador()) {
+            return oUsuarioRepository.findAll()
+                    .get(oRandomService.getRandomInt(0, (int) oUsuarioRepository.count() - 1));
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
+        }
     }
 
     @Override
     public Page<UsuarioEntity> getPage(Pageable oPageable, Optional<String> filter) {
-        if (filter.isPresent()) {
-            return oUsuarioRepository
-                    .findByNombreContainingOrEmailContainingOrWebsiteContaining(
-                            filter.get(), filter.get(), filter.get(), oPageable);
+        if (oAuthService.isAdministrador()) {
+            if (filter.isPresent()) {
+                return oUsuarioRepository
+                        .findByNombreContainingOrEmailContainingOrWebsiteContaining(
+                                filter.get(), filter.get(), filter.get(), oPageable);
+            } else {
+                return oUsuarioRepository.findAll(oPageable);
+            }
         } else {
-            return oUsuarioRepository.findAll(oPageable);
+            throw new UnauthorizedAccessException("No autorizado");
         }
     }
 
     @Override
     public UsuarioEntity get(Long id) {
-        if (oAuthService.isAdministrador()) {
-            return oUsuarioRepository.findById(id).get();
-        } else if (oAuthService.isOneSelf(id)) {
+        if (oAuthService.isAdministrador() || oAuthService.isOneSelf(id)) {
             return oUsuarioRepository.findById(id).get();
         } else {
-            // TODO
-            throw new UnsupportedOperationException("Not supported");
+            throw new UnauthorizedAccessException("No autorizado");
         }
     }
 
@@ -93,8 +101,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         } else if (oAuthService.isOneSelf(usuario.getId())) {
             return usuario;
         } else {
-            // TODO
-            throw new UnsupportedOperationException("Not supported");
+            throw new UnauthorizedAccessException("No autorizado");
         }
     }
 
@@ -105,16 +112,21 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     @Override
     public Long delete(Long id) {
-        oUsuarioRepository.deleteById(id);
-        return 1L;
+        UsuarioEntity usurio = oUsuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con el id " + id + " no encontrado"));
+
+        if (oAuthService.isAdministrador()) {
+            oUsuarioRepository.delete(usurio);
+            return 1L;
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
+        }
     }
 
     @Override
     public UsuarioEntity create(UsuarioEntity oUsuarioEntity) {
-        // TODO
-
         return Optional.ofNullable(oAuthService.isAdministrador() ? oUsuarioRepository.save(oUsuarioEntity) : null)
-                .orElseThrow(() -> new RuntimeException("Acceso denegado"));
+                .orElseThrow(() -> new UnauthorizedAccessException("Acceso denegado"));
 
     }
 
@@ -154,11 +166,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             }
 
             return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
-        } else
-
-        {
-            // TODO
-            throw new UnsupportedOperationException("Not supported");
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
         }
 
     }
@@ -170,14 +179,18 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             oUsuarioRepository.save(oUsuarioEntityFromDatabase);
             return true;
         } else {
-            return false;
+            throw new UnauthorizedAccessException("No autorizado");
         }
     }
 
     @Override
     public Long deleteAll() {
-        oUsuarioRepository.deleteAll();
-        return this.count();
+        if (oAuthService.isAdministrador()) {
+            oUsuarioRepository.deleteAll();
+            return this.count();
+        } else {
+            throw new UnauthorizedAccessException("No autorizado");
+        }
     }
 
     public boolean checkIfEmailExists(String email) {

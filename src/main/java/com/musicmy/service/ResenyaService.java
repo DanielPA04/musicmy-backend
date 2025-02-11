@@ -107,6 +107,7 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
 
     @Override
     public ResenyaEntity create(ResenyaEntity oResenyaEntity) {
+        oResenyaEntity.setFecha(LocalDate.now());
         return oResenyaRepository.save(oResenyaEntity);
     }
 

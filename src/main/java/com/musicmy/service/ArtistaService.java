@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.musicmy.entity.ArtistaEntity;
+import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.ArtistaRepository;
 
 @Service
@@ -105,9 +106,9 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
             oArtistaRepository.deleteById(id);
             return 1L;
         } else {
-            // TODO
-            throw new UnsupportedOperationException("Not supported");
+            throw new UnauthorizedAccessException("No autorizado");
         }
+
     }
 
     @Override
@@ -115,8 +116,7 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
         if (oAuthService.isAdministrador()) {
             return oArtistaRepository.save(oArtistaEntity);
         } else {
-            // TODO
-            throw new UnsupportedOperationException("Not supported");
+            throw new UnauthorizedAccessException("No autorizado");
         }
     }
 

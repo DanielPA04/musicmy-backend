@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.musicmy.entity.ArtistaEntity;
+import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.ArtistaRepository;
 
@@ -88,7 +89,7 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
 
     @Override
     public ArtistaEntity get(Long id) {
-        return oArtistaRepository.findById(id).get();
+        return oArtistaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Artista con el id " + id + " no encontrado"));
     }
 
     public List<ArtistaEntity> getByIdAlbum(Long id) {

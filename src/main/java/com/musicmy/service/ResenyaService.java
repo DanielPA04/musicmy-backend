@@ -89,6 +89,10 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
         }
     }
 
+    public Page<ResenyaEntity> getPageByUsuario(Long id, Pageable oPageable) {
+        return oResenyaRepository.findByUsuario(oUsuarioService.get(id), oPageable);
+    }
+
     @Override
     public ResenyaEntity get(Long id) {
         return oResenyaRepository.findById(id).get();
@@ -142,6 +146,15 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
     public Long deleteAll() {
         oResenyaRepository.deleteAll();
         return this.count();
+    }
+
+    public boolean isResenyaAlreadyExists(ResenyaEntity oResenyaEntity) {
+        return oResenyaRepository.findByAlbumAndUsuario(oResenyaEntity.getAlbum(), oResenyaEntity.getUsuario())
+                .isPresent();
+    }
+
+    public boolean isResenyaAlreadyExists(String email , Long idAlbum) {
+        return oResenyaRepository.findByAlbumAndUsuario(oAlbumService.get(idAlbum), oUsuarioService.getByEmail(email)).isPresent();
     }
 
 }

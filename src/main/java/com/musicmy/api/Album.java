@@ -38,6 +38,11 @@ public class Album {
         return new ResponseEntity<>(oAlbumService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
+    @GetMapping("/lastmonth")
+    public ResponseEntity<Page<AlbumEntity>> getPageLastMonth(Pageable oPageable) {
+        return new ResponseEntity<>(oAlbumService.getPageLastMonth(oPageable), HttpStatus.OK);
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oAlbumService.count(), HttpStatus.OK);
@@ -97,34 +102,33 @@ public class Album {
 
     @PutMapping("/img")
     public ResponseEntity<AlbumEntity> update(
-        @RequestParam("id") Long id,
-        @RequestParam("nombre") String nombre,
-        @RequestParam("fecha") String fecha,
-        @RequestParam("genero") String genero,
-        @RequestParam("descripcion") String descripcion,
-        @RequestParam("discografica") String discografica,
-        @RequestParam("img") MultipartFile img) {
+            @RequestParam("id") Long id,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("fecha") String fecha,
+            @RequestParam("genero") String genero,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("discografica") String discografica,
+            @RequestParam("img") MultipartFile img) {
 
-            try {
+        try {
 
-                AlbumEntity albumEntity = new AlbumEntity();
-                albumEntity.setId(id);
-                albumEntity.setNombre(nombre);
-                albumEntity.setFecha(LocalDate.parse(fecha));
-                albumEntity.setGenero(genero);
-                albumEntity.setDescripcion(descripcion);
-                albumEntity.setDiscografica(discografica);
-                albumEntity.setImg(img.getBytes());
-                AlbumEntity savedAlbum = oAlbumService.update(albumEntity);
-                return new ResponseEntity<>(savedAlbum, HttpStatus.OK);
-    
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            AlbumEntity albumEntity = new AlbumEntity();
+            albumEntity.setId(id);
+            albumEntity.setNombre(nombre);
+            albumEntity.setFecha(LocalDate.parse(fecha));
+            albumEntity.setGenero(genero);
+            albumEntity.setDescripcion(descripcion);
+            albumEntity.setDiscografica(discografica);
+            albumEntity.setImg(img.getBytes());
+            AlbumEntity savedAlbum = oAlbumService.update(albumEntity);
+            return new ResponseEntity<>(savedAlbum, HttpStatus.OK);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
 
     @PostMapping("/random/{cantidad}")
     public ResponseEntity<Long> create(@PathVariable Long cantidad) {
@@ -139,11 +143,9 @@ public class Album {
     @GetMapping("/{id}/img")
     public ResponseEntity<byte[]> obtenerFotoUsuario(@PathVariable Long id) {
         AlbumEntity album = oAlbumService.get(id);
-       
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                    .body(album.getImg());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .body(album.getImg());
     }
 }
-
-

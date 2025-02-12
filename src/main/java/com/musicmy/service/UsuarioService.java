@@ -88,7 +88,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     @Override
     public UsuarioEntity get(Long id) {
         if (oAuthService.isAdministrador() || oAuthService.isOneSelf(id)) {
-            return oUsuarioRepository.findById(id).get();
+            return oUsuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario con el id " + id + " no encontrado"));
         } else {
             throw new UnauthorizedAccessException("No autorizado");
         }

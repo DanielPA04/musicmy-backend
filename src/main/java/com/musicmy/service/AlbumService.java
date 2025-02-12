@@ -108,6 +108,11 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
         return oAlbumRepository.getNotaMedia(id).orElse(0.0);
     }
 
+    public Page<AlbumEntity> getPageLastMonth(Pageable pageable) {
+        return oAlbumRepository.findByFechaBetween(LocalDate.now().minusMonths(1), LocalDate.now(), pageable);
+        
+    }
+
     @Override
     public Long count() {
         return oAlbumRepository.count();

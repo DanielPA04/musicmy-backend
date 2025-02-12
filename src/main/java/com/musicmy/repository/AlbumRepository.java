@@ -1,6 +1,7 @@
 package com.musicmy.repository;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import com.musicmy.entity.AlbumEntity;
 
 public interface AlbumRepository extends JpaRepository<AlbumEntity, Long> {
@@ -21,6 +21,9 @@ public interface AlbumRepository extends JpaRepository<AlbumEntity, Long> {
 
     @Query(value= "SELECT al.* FROM album al JOIN grupoalbumartista gaa ON al.id = gaa.idAlbum JOIN artista a ON gaa.idArtista = a.id WHERE a.id = :id", nativeQuery = true)
     Optional<List<AlbumEntity>> findByArtistaId(Long id);
+
+    Page<AlbumEntity> findByFechaBetween(LocalDate fechaInicio, LocalDate fechaFin, Pageable pageable);
+
 
 
 

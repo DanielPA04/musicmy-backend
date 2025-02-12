@@ -34,6 +34,13 @@ public class Resenya {
         return new ResponseEntity<Page<ResenyaEntity>>(oResenyaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
+    @GetMapping("/byusuario/{id}")
+    public ResponseEntity<Page<ResenyaEntity>> getPageByUsuario(
+            Pageable oPageable,
+            @PathVariable Long id) {
+        return new ResponseEntity<Page<ResenyaEntity>>(oResenyaService.getPageByUsuario(id,oPageable), HttpStatus.OK);
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oResenyaService.count(), HttpStatus.OK);
@@ -55,8 +62,8 @@ public class Resenya {
     }
 
     @PutMapping("")
-    public ResponseEntity<ResenyaEntity> update(@RequestBody ResenyaEntity ResenyaEntity) {
-        return new ResponseEntity<ResenyaEntity>(oResenyaService.update(ResenyaEntity), HttpStatus.OK);
+    public ResponseEntity<ResenyaEntity> update(@RequestBody ResenyaEntity oResenyaEntity) {
+        return new ResponseEntity<ResenyaEntity>(oResenyaService.update(oResenyaEntity), HttpStatus.OK);
     }
 
     @PostMapping("/random/{cantidad}")
@@ -67,5 +74,15 @@ public class Resenya {
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oResenyaService.deleteAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/check")
+    public ResponseEntity<Boolean> exists(@RequestBody ResenyaEntity oResenyaEntity) {
+        return new ResponseEntity<Boolean>(oResenyaService.isResenyaAlreadyExists(oResenyaEntity), HttpStatus.OK);
+    }
+
+    @GetMapping("/check/{email}/{albumId}")
+    public ResponseEntity<Boolean> existsByEmailAndAlbumId(@PathVariable String email, @PathVariable Long albumId) {
+        return new ResponseEntity<Boolean>(oResenyaService.isResenyaAlreadyExists(email, albumId), HttpStatus.OK);
     }
 }

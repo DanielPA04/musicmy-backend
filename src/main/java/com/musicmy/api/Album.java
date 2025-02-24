@@ -141,7 +141,7 @@ public class Album {
     }
 
     @GetMapping("/{id}/img")
-    public ResponseEntity<byte[]> obtenerFotoUsuario(@PathVariable Long id) {
+    public ResponseEntity<byte[]> obtenerFoto(@PathVariable Long id) {
         AlbumEntity album = oAlbumService.get(id);
 
         return ResponseEntity.ok()

@@ -86,8 +86,7 @@ public class Album {
             albumEntity.setDescripcion(descripcion);
             albumEntity.setDiscografica(discografica);
             albumEntity.setImg(img.getBytes());
-            AlbumEntity savedAlbum = oAlbumService.create(albumEntity);
-            return new ResponseEntity<>(savedAlbum, HttpStatus.OK);
+            return new ResponseEntity<>(oAlbumService.create(albumEntity), HttpStatus.OK);
 
         } catch (IOException e) {
             e.printStackTrace();

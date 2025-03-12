@@ -1,13 +1,21 @@
 package com.musicmy.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.entity.ResenyaEntity;
 import com.musicmy.repository.ResenyaRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ResenyaService implements ServiceInterface<ResenyaEntity> {
@@ -24,53 +32,39 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
     @Autowired
     private RandomService oRandomService;
 
-    String[] descripciones = {
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-            "Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.", };
-    String[] websites = { "https://example.com", "https://randomsite.com", "https://mysite.org",
-            "https://educationalplatform.net", "https://learnmore.edu" };
+   
+ @Override
+    public Long baseCreate() {
+        try {
+            // Leer el JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            ClassPathResource resource = new ClassPathResource("json/resenya.json");
+            List<ResenyaEntity> resenyas = objectMapper.readValue(resource.getInputStream(), new TypeReference<>() {
+            });
 
-    Integer[] notas = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            reiniciarAutoIncrement();
 
-    LocalDate[] fechas = {
-            LocalDate.of(2023, 1, 1),
-            LocalDate.of(2023, 6, 15),
-            LocalDate.of(2024, 12, 25),
-            LocalDate.of(2025, 3, 20),
-            LocalDate.of(2025, 7, 4)
-    };
+            for (ResenyaEntity resenya : resenyas) {
 
-    String[] urls = {
-            "https://www.google.com",
-            "https://www.github.com",
-            "https://www.stackoverflow.com",
-            "https://www.oracle.com"
-    };
-
-    @Override
-    public Long randomCreate(Long cantidad) {
-
-        for (int i = 0; i < cantidad; i++) {
-            ResenyaEntity oResenyaEntity = new ResenyaEntity();
-            oResenyaEntity.setId(i + 1L);
-            oResenyaEntity.setNota(notas[oRandomService.getRandomInt(0, notas.length - 1)]);
-            oResenyaEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
-            oResenyaEntity.setFecha(fechas[oRandomService.getRandomInt(0, fechas.length - 1)]);
-            oResenyaEntity.setWebsite(urls[oRandomService.getRandomInt(0, urls.length - 1)]);
-
-            oResenyaEntity.setAlbum(oAlbumService.randomSelection());
-
-            oResenyaEntity.setUsuario(oUsuarioService.randomSelection());
-
-            oResenyaRepository.save(oResenyaEntity);
-
+               
+                // Guardar en la base de datos
+                oResenyaRepository.save(resenya);
+            }
+            return oResenyaRepository.count();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0L;
         }
+    }
 
-        return oResenyaRepository.count();
+   
+
+    @Transactional
+    public void reiniciarAutoIncrement() {
+        oResenyaRepository.flush(); // Asegurar que los cambios han sido guardados
+        oResenyaRepository.resetAutoIncrement();
+
     }
 
     @Override

@@ -66,9 +66,9 @@ public class Resenya {
         return new ResponseEntity<ResenyaEntity>(oResenyaService.update(oResenyaEntity), HttpStatus.OK);
     }
 
-    @PostMapping("/random/{cantidad}")
-    public ResponseEntity<Long> create(@PathVariable Long cantidad) {
-        return new ResponseEntity<Long>(oResenyaService.randomCreate(cantidad), HttpStatus.OK);
+    @PostMapping("/fill")
+    public ResponseEntity<Long> fill() {
+        return new ResponseEntity<Long>(oResenyaService.baseCreate(), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")

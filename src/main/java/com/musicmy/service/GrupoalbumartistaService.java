@@ -1,11 +1,16 @@
 package com.musicmy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.core.io.ClassPathResource;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.entity.AlbumEntity;
 import com.musicmy.entity.ArtistaEntity;
 import com.musicmy.entity.GrupoalbumartistaEntity;
 import com.musicmy.repository.GrupoalbumartistaRepository;
+import jakarta.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,15 +34,37 @@ public class GrupoalbumartistaService implements ServiceInterface<Grupoalbumarti
     @Autowired
     private RandomService oRandomService;
 
-    @Override
-    public Long randomCreate(Long cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            GrupoalbumartistaEntity oGrupoalbumartistaEntity = new GrupoalbumartistaEntity();
-            oGrupoalbumartistaEntity.setAlbum(oAlbumService.randomSelection());
-            oGrupoalbumartistaEntity.setArtista(oArtistaService.randomSelection());
-            oGrupoalbumartistaRepository.save(oGrupoalbumartistaEntity);
+   @Override
+    public Long baseCreate() {
+        try {
+            // Leer el JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            ClassPathResource resource = new ClassPathResource("json/grupoalbumartista.json");
+            List<GrupoalbumartistaEntity> gruposalbumartista = objectMapper.readValue(resource.getInputStream(), new TypeReference<>() {
+            });
+
+            reiniciarAutoIncrement();
+
+            for (GrupoalbumartistaEntity grupoalbumartista : gruposalbumartista) {
+
+
+                // Guardar en la base de datos
+                oGrupoalbumartistaRepository.save(grupoalbumartista);
+            }
+            return oGrupoalbumartistaRepository.count();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0L;
         }
-        return oGrupoalbumartistaRepository.count();
+    }
+
+   
+
+    @Transactional
+    public void reiniciarAutoIncrement() {
+        oGrupoalbumartistaRepository.flush(); // Asegurar que los cambios han sido guardados
+        oGrupoalbumartistaRepository.resetAutoIncrement();
 
     }
 

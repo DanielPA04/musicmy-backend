@@ -1,0 +1,27 @@
+[
+    {
+      "nombre": "Michael Jackson",
+      "nombrereal": "Michael Joseph Jackson",
+      "descripcion": "Cantante, compositor y bailarín estadounidense, conocido como el 'Rey del Pop'. Su álbum 'Thriller' es el más vendido de la historia.",
+      "spotify": "https://open.spotify.com/artist/3fM4kUQyHvAlFMxB2lBk1h"
+    },
+    {
+      "nombre": "The Beatles",
+      "nombrereal": "The Beatles",
+      "descripcion": "Banda de rock británica formada en Liverpool, conocida por sus innovaciones en la música popular. Su álbum 'Abbey Road' es uno de los más aclamados.",
+      "spotify": "https://open.spotify.com/artist/3WrFJ7ztbogyGnTE5H8oJS"
+    },
+    {
+      "nombre": "Pink Floyd",
+      "nombrereal": "Pink Floyd",
+      "descripcion": "Banda británica de rock progresivo, famosa por su álbum conceptual 'The Dark Side of the Moon', considerado uno de los mejores de la historia.",
+      "spotify": "https://open.spotify.com/artist/2G7b7GZl4RUtQXr51cH9Bh"
+    },
+    {
+      "nombre": "AC/DC",
+      "nombrereal": "AC/DC",
+      "descripcion": "Banda de hard rock australiana, conocida por su sonido crudo y poderoso. 'Back in Black' es uno de los álbumes más vendidos del mundo.",
+      "spotify": "https://open.spotify.com/artist/0v7w8i6sh6pLop4k76v1pr"
+    }
+  ]
+  

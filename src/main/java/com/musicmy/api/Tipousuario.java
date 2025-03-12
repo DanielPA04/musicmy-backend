@@ -59,9 +59,9 @@ public class Tipousuario {
         return new ResponseEntity<TipousuarioEntity>(oTipousuarioService.update(TipousuarioEntity), HttpStatus.OK);
     }
 
-    @PostMapping("/random/{cantidad}")
-    public ResponseEntity<Long> create(@PathVariable Long cantidad) {
-        return new ResponseEntity<Long>(oTipousuarioService.randomCreate(cantidad), HttpStatus.OK);
+    @PostMapping("/fill")
+    public ResponseEntity<Long> fill() {
+        return new ResponseEntity<Long>(oTipousuarioService.baseCreate(), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")

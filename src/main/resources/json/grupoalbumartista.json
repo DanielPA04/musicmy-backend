@@ -1,0 +1,35 @@
+[
+    {
+      "album": {
+        "id": 1
+      },
+      "artista": {
+        "id": 1
+      }
+    },
+    {
+      "album": {
+        "id": 2
+      },
+      "artista": {
+        "id": 2
+      }
+    },
+    {
+      "album": {
+        "id": 3
+      },
+      "artista": {
+        "id": 3
+      }
+    },
+    {
+      "album": {
+        "id": 4
+      },
+      "artista": {
+        "id": 4
+      }
+    }
+  ]
+  

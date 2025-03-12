@@ -8,26 +8,30 @@ public class DatabaseService {
 
     @Autowired
     private ArtistaService oArtistaService;
+
     @Autowired
     private AlbumService oAlbumService;
+
     @Autowired
     private GrupoalbumartistaService oGrupoalbumartistaService;
+
     @Autowired
     private UsuarioService oUsuarioService;
+
     @Autowired
     private ResenyaService oResenyaService;
+    
     @Autowired
     private TipousuarioService oTipousuarioService;
    
 
     public Long fill() {
-        oAlbumService.randomCreate(50L);
-        oArtistaService.randomCreate(20L);
-        oGrupoalbumartistaService.randomCreate(20L);
-        oTipousuarioService.randomCreate(1L);
-        oUsuarioService.randomCreate(25L);
-        oResenyaService.randomCreate(50L);
-
+        oAlbumService.baseCreate();
+        oArtistaService.baseCreate();
+        oGrupoalbumartistaService.baseCreate();
+        oTipousuarioService.baseCreate();
+        oUsuarioService.baseCreate();
+        oResenyaService.baseCreate();
         return 0L;
     }
 

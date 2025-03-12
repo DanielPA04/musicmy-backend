@@ -1,18 +1,25 @@
 package com.musicmy.service;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.entity.AlbumEntity;
 import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.repository.AlbumRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AlbumService implements ServiceInterface<AlbumEntity> {
@@ -23,60 +30,54 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
     @Autowired
     private RandomService oRandomService;
 
-    private String[] nombres = {
-            "Album_1", "Album_2", "Album_3", "Album_4", "Album_5"
-    };
-
-    private LocalDate[] fechas = {
-            LocalDate.of(1980, 5, 15),
-            LocalDate.of(1990, 3, 22),
-            LocalDate.of(2000, 11, 10),
-            LocalDate.of(1975, 8, 5),
-            LocalDate.of(1985, 12, 25)
-    };
-
-    private String[] generos = {
-            "Pop", "Rock", "Jazz", "Hip-Hop", "Clásica"
-    };
-
-    private String[] descripciones = {
-            "Un artista destacado en su género.",
-            "Música revolucionaria e influyente.",
-            "Estilo único y vanguardista.",
-            "Creador de melodías inolvidables.",
-            "Una leyenda en su industria."
-    };
-
-    private String[] discograficas = {
-            "Sony Music", "Universal Music", "Warner Music", "EMI", "Independiente"
-    };
-
     @Override
-    public Long randomCreate(Long cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            AlbumEntity oAlbumEntity = new AlbumEntity();
-            oAlbumEntity.setNombre(nombres[oRandomService.getRandomInt(0, nombres.length - 1)]);
-            oAlbumEntity.setFecha(fechas[oRandomService.getRandomInt(0, fechas.length - 1)]);
-            oAlbumEntity.setGenero(generos[oRandomService.getRandomInt(0, generos.length - 1)]);
-            oAlbumEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
-            oAlbumEntity.setDiscografica(discograficas[oRandomService.getRandomInt(0, discograficas.length - 1)]);
+    public Long baseCreate() {
+        try {
+            // Leer el JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            ClassPathResource resource = new ClassPathResource("json/album.json");
+            List<AlbumEntity> albumes = objectMapper.readValue(resource.getInputStream(), new TypeReference<>() {
+            });
 
-            InputStream imageStream = getClass().getClassLoader().getResourceAsStream("img/album.jpg");
-            if (imageStream != null) {
-                byte[] imageBytes;
-                try {
-                    imageBytes = imageStream.readAllBytes();
-                    oAlbumEntity.setImg(imageBytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            reiniciarAutoIncrement();
+
+            for (AlbumEntity album : albumes) {
+
+                // Cargar imagen desde resources/img si existe
+                byte[] imagen = cargarImagenDesdeResources("img/" + album.getNombre().replace(" ", "").toLowerCase() + ".webp");
+                if (imagen == null) {
+                    imagen = cargarImagenDesdeResources("img/album.webp");
                 }
-            } else {
-                System.out.println("Imagen no encontrada en el classpath.");
-            }
 
-            oAlbumRepository.save(oAlbumEntity);
+                album.setImg(imagen);
+
+                // Guardar en la base de datos
+                oAlbumRepository.save(album);
+            }
+            return oAlbumRepository.count();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0L;
         }
-        return oAlbumRepository.count();
+    }
+
+    private byte[] cargarImagenDesdeResources(String ruta) {
+        try {
+            ClassPathResource resource = new ClassPathResource(ruta);
+            Path path = resource.getFile().toPath();
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            System.err.println("No se pudo cargar la imagen: " + ruta);
+            return null;
+        }
+    }
+
+    @Transactional
+    public void reiniciarAutoIncrement() {
+        oAlbumRepository.flush(); // Asegurar que los cambios han sido guardados
+        oAlbumRepository.resetAutoIncrement();
+
     }
 
     @Override
@@ -97,11 +98,13 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     @Override
     public AlbumEntity get(Long id) {
-        return oAlbumRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Album con el id " + id + " no encontrado"));
+        return oAlbumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Album con el id " + id + " no encontrado"));
     }
 
-    public List<AlbumEntity> getByIdArtista(Long id){
-        return oAlbumRepository.findByArtistaId(id).orElseThrow(() -> new ResourceNotFoundException("Album con el id " + id + " no encontrado"));
+    public List<AlbumEntity> getByIdArtista(Long id) {
+        return oAlbumRepository.findByArtistaId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Album con el id " + id + " no encontrado"));
     }
 
     public Double getNotaMedia(Long id) {
@@ -110,8 +113,14 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     public Page<AlbumEntity> getPageLastMonth(Pageable pageable) {
         return oAlbumRepository.findByFechaBetween(LocalDate.now().minusMonths(1), LocalDate.now(), pageable);
-        
+
     }
+
+    public byte[] getImgById(Long id) {
+        AlbumEntity album = get(id);
+        return album.getImg();
+    }
+
 
     @Override
     public Long count() {

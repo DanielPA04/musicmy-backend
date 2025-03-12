@@ -1,17 +1,24 @@
 package com.musicmy.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.entity.ArtistaEntity;
 import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.ArtistaRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ArtistaService implements ServiceInterface<ArtistaEntity> {
@@ -25,52 +32,57 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
     @Autowired
     private AuthService oAuthService;
 
-    String[] nombres = {
-            "Bad Bunny",
-            "Taylor Swift",
-            "Drake",
-            "Adele",
-            "Billie Eilish"
-    };
+   
 
-    String[] nombresReales = {
-            "Benito Antonio Martínez Ocasio",
-            "Taylor Alison Swift",
-            "Aubrey Drake Graham",
-            "Adele Laurie Blue Adkins",
-            "Billie Eilish Pirate Baird O'Connell"
-    };
+   @Override
+    public Long baseCreate() {
+        try {
+            // Leer el JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            ClassPathResource resource = new ClassPathResource("json/artista.json");
+            List<ArtistaEntity> artistas = objectMapper.readValue(resource.getInputStream(), new TypeReference<>() {
+            });
 
-    String[] descripciones = {
-            "Cantante y rapero puertorriqueño, pionero del trap latino.",
-            "Cantante y compositora estadounidense conocida por su versatilidad.",
-            "Rapper y productor canadiense, un ícono del hip-hop contemporáneo.",
-            "Cantante británica famosa por su poderosa voz y baladas emotivas.",
-            "Cantante y compositora estadounidense, conocida por su estilo alternativo y minimalista."
-    };
+            reiniciarAutoIncrement();
 
-    String[] spotify = {
-            "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X",
-            "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02",
-            "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
-            "https://open.spotify.com/artist/4dpARuHxo51G3z768sgnrY",
-            "https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH"
-    };
+            for (ArtistaEntity artista : artistas) {
 
-    @Override
-    public Long randomCreate(Long cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            ArtistaEntity oArtistaEntity = new ArtistaEntity();
-            oArtistaEntity.setNombre(nombres[oRandomService.getRandomInt(0, nombres.length - 1)]);
-            oArtistaEntity.setNombrereal(nombresReales[oRandomService.getRandomInt(0, nombresReales.length - 1)]);
-            oArtistaEntity.setDescripcion(descripciones[oRandomService.getRandomInt(0, descripciones.length - 1)]);
-            oArtistaEntity.setSpotify(spotify[oRandomService.getRandomInt(0, spotify.length - 1)]);
-            oArtistaEntity.setImg(null);
-            oArtistaRepository.save(oArtistaEntity);
+                // Cargar imagen desde resources/img si existe
+                byte[] imagen = cargarImagenDesdeResources("img/" + artista.getNombre().replace(" ", "").toLowerCase() + ".webp");
+                if (imagen == null) {
+                    imagen = cargarImagenDesdeResources("img/artista.webp");
+                }
+
+                artista.setImg(imagen);
+
+                // Guardar en la base de datos
+                oArtistaRepository.save(artista);
+            }
+            return oArtistaRepository.count();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0L;
         }
-        return oArtistaRepository.count();
     }
 
+    private byte[] cargarImagenDesdeResources(String ruta) {
+        try {
+            ClassPathResource resource = new ClassPathResource(ruta);
+            Path path = resource.getFile().toPath();
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            System.err.println("No se pudo cargar la imagen: " + ruta);
+            return null;
+        }
+    }
+
+    @Transactional
+    public void reiniciarAutoIncrement() {
+        oArtistaRepository.flush(); // Asegurar que los cambios han sido guardados
+        oArtistaRepository.resetAutoIncrement();
+
+    }
     @Override
     public ArtistaEntity randomSelection() {
         return oArtistaRepository.findAll().get(oRandomService.getRandomInt(0, (int) oArtistaRepository.count() - 1));
@@ -94,6 +106,11 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
 
     public List<ArtistaEntity> getByIdAlbum(Long id) {
         return oArtistaRepository.findByAlbumId(id).get();
+    }
+
+      public byte[] getImgById(Long id) {
+        ArtistaEntity artista = get(id);
+        return artista.getImg();
     }
 
     @Override

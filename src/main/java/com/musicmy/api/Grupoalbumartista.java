@@ -62,9 +62,9 @@ public class Grupoalbumartista {
         return new ResponseEntity<GrupoalbumartistaEntity>(oGrupoalbumartistaService.update(GrupoalbumartistaEntity), HttpStatus.OK);
     }
 
-    @PostMapping("/random/{cantidad}")
-    public ResponseEntity<Long> create(@PathVariable Long cantidad) {
-        return new ResponseEntity<Long>(oGrupoalbumartistaService.randomCreate(cantidad), HttpStatus.OK);
+    @PostMapping("/fill")
+    public ResponseEntity<Long> fill() {
+        return new ResponseEntity<Long>(oGrupoalbumartistaService.baseCreate(), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")

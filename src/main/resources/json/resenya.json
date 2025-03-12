@@ -1,0 +1,51 @@
+[
+    {
+      "nota": 9,
+      "descripcion": "Un álbum icónico que define el género pop. Las canciones como 'Billie Jean' y 'Beat It' siguen siendo atemporales. La producción es impecable y la voz de Michael Jackson sigue siendo única.",
+      "fecha": "2025-03-11",
+      "website": "https://usuario1.com",
+      "album": {
+        "id": 1
+      },
+      "usuario": {
+        "id": 1
+      }
+    },
+    {
+      "nota": 7,
+      "descripcion": "Gran álbum, pero algunas canciones me parecen un poco repetitivas. A pesar de ello, la calidad musical y las letras son excepcionales. 'Thriller' es un clásico que nunca pasará de moda.",
+      "fecha": "2025-03-11",
+      "website": "https://usuario1.com",
+      "album": {
+        "id": 2
+      },
+      "usuario": {
+        "id": 1
+      }
+    },
+    {
+      "nota": 6,
+      "descripcion": "Un álbum que no me convenció por completo. Algunas canciones me parecieron demasiado experimentales, aunque la producción es excelente. Aún así, tiene varios momentos brillantes.",
+      "fecha": "2025-03-11",
+      "website": "https://usuario2.com",
+      "album": {
+        "id": 3
+      },
+      "usuario": {
+        "id": 2
+      }
+    },
+    {
+      "nota": 7,
+      "descripcion": "Me encantó la mezcla de géneros y sonidos que presenta. Aunque algunos temas no son tan pegajosos como otros, la ejecución y el mensaje son poderosos. Un buen trabajo en general.",
+      "fecha": "2025-03-11",
+      "website": "https://usuario2.com",
+      "album": {
+        "id": 4
+      },
+      "usuario": {
+        "id": 2
+      }
+    }
+  ]
+  

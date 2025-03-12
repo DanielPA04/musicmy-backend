@@ -3,16 +3,14 @@ package com.musicmy.entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Blob;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
@@ -39,7 +37,9 @@ public class ArtistaEntity {
 
     private String spotify;
 
-    private Blob img;
+    @Lob
+    @JsonIgnore
+    private byte[] img;
 
     @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private java.util.List<GrupoalbumartistaEntity> grupoalbumartistas;
@@ -51,6 +51,5 @@ public class ArtistaEntity {
     public int getGrupoalbumartistas() {
         return this.grupoalbumartistas.size();
     }
-
 
 }

@@ -129,9 +129,9 @@ public class Album {
 
     }
 
-    @PostMapping("/random/{cantidad}")
-    public ResponseEntity<Long> create(@PathVariable Long cantidad) {
-        return new ResponseEntity<Long>(oAlbumService.randomCreate(cantidad), HttpStatus.OK);
+    @PostMapping("/fill")
+    public ResponseEntity<Long> fill() {
+        return new ResponseEntity<Long>(oAlbumService.baseCreate(), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")
@@ -141,10 +141,9 @@ public class Album {
 
     @GetMapping("/{id}/img")
     public ResponseEntity<byte[]> obtenerFoto(@PathVariable Long id) {
-        AlbumEntity album = oAlbumService.get(id);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .body(album.getImg());
+                .body(oAlbumService.getImgById(id));
     }
 }

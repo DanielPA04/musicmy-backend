@@ -1,9 +1,12 @@
 package com.musicmy.api;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.service.UsuarioService;
@@ -63,9 +67,42 @@ public class Usuario {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.update(UsuarioEntity), HttpStatus.OK);
     }
 
-    @PostMapping("/random/{cantidad}")
-    public ResponseEntity<Long> create(@PathVariable Long cantidad) {
-        return new ResponseEntity<Long>(oUsuarioService.randomCreate(cantidad), HttpStatus.OK);
+
+    @PutMapping("/img")
+    public ResponseEntity<UsuarioEntity> update(
+            @RequestParam("id") Long id,
+            @RequestParam("username") String username,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("fecha") String fecha,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("website") String website,
+            @RequestParam("img") MultipartFile img) {
+
+        try {
+
+            UsuarioEntity usuarioEntity = new UsuarioEntity();
+            usuarioEntity.setId(id);
+            usuarioEntity.setUsername(username);
+            usuarioEntity.setNombre(nombre);
+            usuarioEntity.setFecha(LocalDate.parse(fecha));
+            usuarioEntity.setDescripcion(descripcion);
+            usuarioEntity.setEmail(email);
+            usuarioEntity.setPassword(password);
+            usuarioEntity.setWebsite(website);
+            usuarioEntity.setImg(img.getBytes());
+            return new ResponseEntity<>(oUsuarioService.update(usuarioEntity), HttpStatus.OK);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/fill")
+    public ResponseEntity<Long> create() {
+        return new ResponseEntity<Long>(oUsuarioService.baseCreate(), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")
@@ -81,5 +118,13 @@ public class Usuario {
     @GetMapping("/check/email/{email}")
     public ResponseEntity<Boolean> checkEmailExists(@PathVariable String email) {
         return new ResponseEntity<Boolean>(oUsuarioService.checkIfEmailExists(email), HttpStatus.OK);
+    }
+
+     @GetMapping("/{id}/img")
+    public ResponseEntity<byte[]> obtenerFoto(@PathVariable Long id) {
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .body(oUsuarioService.getImgById(id));
     }
 }

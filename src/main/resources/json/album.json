@@ -1,0 +1,31 @@
+[
+    {
+      "nombre": "Thriller",
+      "fecha": "1982-11-30",
+      "genero": "Pop, rock, R&B",
+      "descripcion": "El sexto álbum de estudio de Michael Jackson, el más vendido de todos los tiempos, con éxitos como 'Billie Jean', 'Beat It' y la canción que da nombre al álbum.",
+      "discografica": "Epic Records"
+    },
+    {
+      "nombre": "Abbey Road",
+      "fecha": "1969-09-26",
+      "genero": "Rock",
+      "descripcion": "Un álbum icónico de The Beatles, que incluye el famoso lado B con la suite 'Abbey Road' y canciones como 'Come Together' y 'Something'.",
+      "discografica": "Apple Records"
+    },
+    {
+      "nombre": "The Dark Side of the Moon",
+      "fecha": "1973-03-01",
+      "genero": "Progressive rock",
+      "descripcion": "Un álbum conceptual de Pink Floyd, conocido por su compleja producción y su enfoque en temas como el tiempo, la muerte y la locura.",
+      "discografica": "Harvest Records"
+    },
+    {
+      "nombre": "Back in Black",
+      "fecha": "1980-07-25",
+      "genero": "Hard rock",
+      "descripcion": "El álbum de AC/DC que marcó el regreso de la banda con el vocalista Brian Johnson tras la muerte de Bon Scott. Con el icónico 'You Shook Me All Night Long'.",
+      "discografica": "Atlantic Records"
+    }
+  ]
+  

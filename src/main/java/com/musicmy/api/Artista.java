@@ -72,13 +72,7 @@ public class Artista {
 
         try {
 
-            ArtistaEntity artistaEntity = new ArtistaEntity();
-            artistaEntity.setNombre(nombre);
-            artistaEntity.setNombrereal(nombrereal);
-            artistaEntity.setDescripcion(descripcion);
-            artistaEntity.setSpotify(spotify);
-            artistaEntity.setImg(img.getBytes());
-            return new ResponseEntity<>(oArtistaService.create(artistaEntity), HttpStatus.OK);
+            return new ResponseEntity<>(oArtistaService.create(new ArtistaEntity(nombre, nombrereal, descripcion, spotify, img.getBytes())), HttpStatus.OK);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,7 +121,7 @@ public class Artista {
         return new ResponseEntity<Long>(oArtistaService.deleteAll(), HttpStatus.OK);
     }
 
-     @GetMapping("/{id}/img")
+    @GetMapping("/{id}/img")
     public ResponseEntity<byte[]> obtenerFoto(@PathVariable Long id) {
 
         return ResponseEntity.ok()

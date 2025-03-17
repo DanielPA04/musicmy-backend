@@ -20,9 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.musicmy.entity.TipousuarioEntity;
 import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.service.UsuarioService;
-
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
@@ -57,6 +58,34 @@ public class Usuario {
     public ResponseEntity<UsuarioEntity> create(@RequestBody UsuarioEntity UsuarioEntity) {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.create(UsuarioEntity), HttpStatus.OK);
     }
+
+    @PostMapping("/img")
+    public ResponseEntity<UsuarioEntity> create(
+            @RequestParam("username") String username,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("fecha") String fecha,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("website") String website,
+            @RequestParam("img") MultipartFile img,
+            @RequestParam("tipousuario") String tipousuarioJson) {
+
+        try {
+
+            return new ResponseEntity<>(
+                    oUsuarioService.create(
+                            new UsuarioEntity(username, nombre, LocalDate.parse(fecha), descripcion,
+                                    email, password, website, img.getBytes(),
+                                    new ObjectMapper().readValue(tipousuarioJson, TipousuarioEntity.class))),
+                    HttpStatus.OK);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<UsuarioEntity> register(@RequestBody UsuarioEntity UsuarioEntity) {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.register(UsuarioEntity), HttpStatus.OK);
@@ -66,7 +95,6 @@ public class Usuario {
     public ResponseEntity<UsuarioEntity> update(@RequestBody UsuarioEntity UsuarioEntity) {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.update(UsuarioEntity), HttpStatus.OK);
     }
-
 
     @PutMapping("/img")
     public ResponseEntity<UsuarioEntity> update(
@@ -78,21 +106,17 @@ public class Usuario {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("website") String website,
-            @RequestParam("img") MultipartFile img) {
+            @RequestParam("img") MultipartFile img,
+            @RequestParam("tipousuario") String tipousuarioJson) {
 
         try {
 
-            UsuarioEntity usuarioEntity = new UsuarioEntity();
-            usuarioEntity.setId(id);
-            usuarioEntity.setUsername(username);
-            usuarioEntity.setNombre(nombre);
-            usuarioEntity.setFecha(LocalDate.parse(fecha));
-            usuarioEntity.setDescripcion(descripcion);
-            usuarioEntity.setEmail(email);
-            usuarioEntity.setPassword(password);
-            usuarioEntity.setWebsite(website);
-            usuarioEntity.setImg(img.getBytes());
-            return new ResponseEntity<>(oUsuarioService.update(usuarioEntity), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    oUsuarioService.create(
+                            new UsuarioEntity(id, username, nombre, LocalDate.parse(fecha), descripcion,
+                                    email, password, website, img.getBytes(),
+                                    new ObjectMapper().readValue(tipousuarioJson, TipousuarioEntity.class))),
+                    HttpStatus.OK);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,7 +144,7 @@ public class Usuario {
         return new ResponseEntity<Boolean>(oUsuarioService.checkIfEmailExists(email), HttpStatus.OK);
     }
 
-     @GetMapping("/{id}/img")
+    @GetMapping("/{id}/img")
     public ResponseEntity<byte[]> obtenerFoto(@PathVariable Long id) {
 
         return ResponseEntity.ok()

@@ -6,6 +6,7 @@ import com.musicmy.entity.AlbumEntity;
 import com.musicmy.service.AlbumService;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -145,5 +146,10 @@ public class Album {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
                 .body(oAlbumService.getImgById(id));
+    }
+
+    @GetMapping("/byartista/{id}")
+    public ResponseEntity<List<AlbumEntity>> getByAlbum(@PathVariable Long id) {
+        return new ResponseEntity<List<AlbumEntity>>(oAlbumService.getByIdArtista(id), HttpStatus.OK);
     }
 }

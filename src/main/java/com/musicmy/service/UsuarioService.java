@@ -138,8 +138,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     }
 
       public byte[] getImgById(Long id) {
-        UsuarioEntity usuario =  get(id);
-        // UsuarioEntity usuario =  oUsuarioRepository.findById(id).get();
+        // UsuarioEntity usuario =  get(id);
+        UsuarioEntity usuario =  oUsuarioRepository.findById(id).get();
 
         return usuario.getImg();
     }

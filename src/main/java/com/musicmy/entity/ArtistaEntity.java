@@ -48,6 +48,15 @@ public class ArtistaEntity {
         this.grupoalbumartistas = new java.util.ArrayList<>();
     }
 
+    public ArtistaEntity(String nombre, String nombrereal, String descripcion, String spotify, byte[] img) {
+        this.nombre = nombre;
+        this.nombrereal = nombrereal;
+        this.descripcion = descripcion;
+        this.spotify = spotify;
+        this.img = img;
+        this.grupoalbumartistas = new java.util.ArrayList<>();
+    }
+
     public int getGrupoalbumartistas() {
         return this.grupoalbumartistas.size();
     }

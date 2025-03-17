@@ -15,7 +15,13 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
     Optional<UsuarioEntity> findByEmail(String email);
 
+    Optional<UsuarioEntity> findByUsername(String username);
+
+
     Optional<UsuarioEntity> findByEmailAndPassword(String email, String password);
+
+    Optional<UsuarioEntity> findByEmailOrUsernameAndPassword(String email, String username, String password);
+
 
     Page<UsuarioEntity> findByNombreContainingOrEmailContainingOrWebsiteContaining(
             String filter1, String filter2, String filter3, Pageable oPageable);

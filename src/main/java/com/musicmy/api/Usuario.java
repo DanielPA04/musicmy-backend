@@ -144,6 +144,11 @@ public class Usuario {
         return new ResponseEntity<Boolean>(oUsuarioService.checkIfEmailExists(email), HttpStatus.OK);
     }
 
+    @GetMapping("/check/username/{username}")
+    public ResponseEntity<Boolean> checkUsernameExists(@PathVariable String username) {
+        return new ResponseEntity<Boolean>(oUsuarioService.checkIfUsernameExists(username), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/img")
     public ResponseEntity<byte[]> obtenerFoto(@PathVariable Long id) {
 

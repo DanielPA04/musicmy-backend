@@ -24,7 +24,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LogindataBean credentials) {
         if (authService.checkLogin(credentials)) {
-            return ResponseEntity.ok("\"" + authService.getToken(credentials.getEmail()) + "\"");
+            return ResponseEntity.ok("\"" + authService.getToken(credentials.getIdentifier()) + "\"");
         } else {
             return ResponseEntity.status(401).body("\"" + "Unauthorized" + "\"");
         }

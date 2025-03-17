@@ -244,4 +244,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         return oUsuarioRepository.findByEmail(email).isPresent();
     }
 
+    public boolean checkIfUsernameExists(String username) {
+        return oUsuarioRepository.findByUsername(username).isPresent();
+    }
+
 }

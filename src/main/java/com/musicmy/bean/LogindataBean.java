@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LogindataBean {
-    private String email;
+    private String identifier;
     private String password;
 }

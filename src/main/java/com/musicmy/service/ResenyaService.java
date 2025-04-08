@@ -87,6 +87,10 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
         return oResenyaRepository.findByUsuario(oUsuarioService.get(id), oPageable);
     }
 
+    public Page<ResenyaEntity> getPageByAlbum(Long id, Pageable oPageable) {
+        return oResenyaRepository.findByAlbum(oAlbumService.get(id), oPageable);
+    }
+
     @Override
     public ResenyaEntity get(Long id) {
         return oResenyaRepository.findById(id).get();

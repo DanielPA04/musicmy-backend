@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: database:3306
--- Tiempo de generación: 15-01-2025 a las 09:42:12
+-- Tiempo de generación: 22-03-2025 a las 12:33:34
 -- Versión del servidor: 8.4.2
 -- Versión de PHP: 8.2.24
 
@@ -93,13 +93,28 @@ CREATE TABLE `tipousuario` (
 
 CREATE TABLE `usuario` (
   `id` int NOT NULL,
+  `username` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
   `nombre` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `descripcion` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
   `website` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `img` longblob,
   `idTipoUsuario` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarioverf`
+--
+
+CREATE TABLE `usuarioverf` (
+  `id` int NOT NULL,
+  `email` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `code` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `exp` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
@@ -122,9 +137,7 @@ ALTER TABLE `artista`
 -- Indices de la tabla `grupoalbumartista`
 --
 ALTER TABLE `grupoalbumartista`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idAlbum` (`idAlbum`,`idArtista`),
-  ADD KEY `idArtista` (`idArtista`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `resenya`
@@ -142,6 +155,12 @@ ALTER TABLE `tipousuario`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `usuarioverf`
+--
+ALTER TABLE `usuarioverf`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -185,13 +204,8 @@ ALTER TABLE `usuario`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- Restricciones para tablas volcadas
+-- AUTO_INCREMENT de la tabla `usuarioverf`
 --
-
---
--- Filtros para la tabla `grupoalbumartista`
---
-ALTER TABLE `grupoalbumartista`
-  ADD CONSTRAINT `grupoalbumartista_ibfk_1` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `grupoalbumartista_ibfk_2` FOREIGN KEY (`idArtista`) REFERENCES `artista` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `usuarioverf`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 COMMIT;

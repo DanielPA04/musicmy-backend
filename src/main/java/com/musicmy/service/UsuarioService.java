@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.musicmy.dto.EmailDTO;
 import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.exception.UnauthorizedAccessException;
@@ -39,6 +40,12 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     @Autowired
     private AuthService oAuthService;
 
+    @Autowired
+    private EmailService oEmailService;
+
+    @Autowired
+    private VerificationCodeGenerator verificationCodeGenerator;
+
     @Override
     public Long baseCreate() {
         try {
@@ -52,7 +59,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             reiniciarAutoIncrement();
 
             for (UsuarioEntity usuario : usuarios) {
-                // TODO si da problemas el fill revisar si es por esto
+                // si da problemas el fill revisar si es por esto
                 // usuario.setTipousuario(oTipousuarioService.get(usuario.getTipousuario().getId()));
 
                 // Cargar imagen desde resources/img si existe
@@ -125,7 +132,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         }
     }
 
-    //TODO username
+    // TODO username
     public UsuarioEntity getByEmail(String email) {
         UsuarioEntity usuario = oUsuarioRepository.findByEmail(email).get();
         if (oAuthService.isAdministrador()) {
@@ -137,9 +144,9 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         }
     }
 
-      public byte[] getImgById(Long id) {
-        // UsuarioEntity usuario =  get(id);
-        UsuarioEntity usuario =  oUsuarioRepository.findById(id).get();
+    public byte[] getImgById(Long id) {
+        // UsuarioEntity usuario = get(id);
+        UsuarioEntity usuario = oUsuarioRepository.findById(id).get();
 
         return usuario.getImg();
     }
@@ -169,10 +176,25 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     }
 
+    //TODO en el front se puede solucionar, pero como hago que si dos consultas se mandan a la vez no cree 2?
+    @Transactional
     public UsuarioEntity register(UsuarioEntity oUsuarioEntity) {
-        oUsuarioEntity
-                .setTipousuario(oTipousuarioService.get(oTipousuarioRepository.findByNombre("Usuario").get().getId()));
-        return oUsuarioRepository.save(oUsuarioEntity);
+        if (!checkIfEmailExists(oUsuarioEntity.getEmail())) {
+            oUsuarioEntity
+                    .setTipousuario(
+                            oTipousuarioService.get(oTipousuarioRepository.findByNombre("Usuario").get().getId()));
+
+            UsuarioEntity usuario = oUsuarioRepository.save(oUsuarioEntity);
+            //TODO mirar de centralizar esto tmb ya que esta en AuthService
+            this.oEmailService.sendVerificationEmail(
+                    new EmailDTO(oUsuarioEntity.getEmail(), "Verificaccion", "Tu cuenta ha sido registrada"),
+                    this.verificationCodeGenerator.generateVerificationCode());
+
+            return usuario;
+        } else {
+            // TODO
+            throw new UnauthorizedAccessException("El email ya esta registrado");
+        }
     }
 
     @Override

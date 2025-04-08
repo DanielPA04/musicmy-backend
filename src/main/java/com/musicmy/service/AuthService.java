@@ -6,11 +6,14 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.musicmy.bean.LogindataBean;
+import com.musicmy.dto.EmailDTO;
 import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.exception.NoSessionException;
 import com.musicmy.helper.JWTHelper;
 import com.musicmy.repository.TipousuarioRepository;
 import com.musicmy.repository.UsuarioRepository;
+import com.musicmy.repository.UsuarioverfRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -18,6 +21,11 @@ public class AuthService {
 
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
+    private final String EMAIL_SUBJECT = "MusicMy - Verificación de correo electrónico";
+    private final String EMAIL_MESSAGE = "Tu cuenta ha sido registrada";
+
+    
 
     @Autowired
     HttpServletRequest request;
@@ -30,6 +38,15 @@ public class AuthService {
 
     @Autowired
     private UsuarioRepository oUsuarioRepository;
+
+    @Autowired
+    private UsuarioverfRepository oUsuarioverfRepository;
+
+    @Autowired
+    private EmailService oEmailService;
+
+    @Autowired
+    private VerificationCodeGenerator verificationCodeGenerator;
 
     public static boolean isEmail(String input) {
         if (input == null || input.isEmpty()) {
@@ -94,6 +111,38 @@ public class AuthService {
         } else {
             return "Bienvenido a la zona restringida";
         }
+    }
+
+    public boolean checkVerification(String credential) {
+        if (isEmail(credential)) {
+            return !oEmailService.isEmailPresent(credential);
+        } else {
+            return !oEmailService.isEmailPresent(oUsuarioRepository.findByUsername(credential).get().getEmail());
+        }
+    }
+
+    public void verify(EmailDTO emailDTO) {
+        oUsuarioverfRepository.delete(oUsuarioverfRepository.findByCode(emailDTO.getCode()).get());
+    }
+
+    public boolean checkRegistered(String credential) {
+        return oUsuarioRepository.findByEmailOrUsername(credential, credential).isPresent();
+    }
+
+    public void resendCode(String credential) {
+        UsuarioEntity user = oUsuarioRepository.findByEmailOrUsername(credential, credential).get();
+
+        oUsuarioverfRepository.delete(oUsuarioverfRepository.findByEmail(user.getEmail()).get());
+
+        codeSend(user);
+
+      
+    }
+
+    public void codeSend(UsuarioEntity user) {
+        oEmailService.sendVerificationEmail(
+                new EmailDTO(user.getEmail(), this.EMAIL_SUBJECT, this.EMAIL_MESSAGE),
+                verificationCodeGenerator.generateVerificationCode());
     }
 
 }

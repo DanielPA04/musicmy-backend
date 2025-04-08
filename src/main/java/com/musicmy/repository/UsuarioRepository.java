@@ -17,11 +17,11 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
     Optional<UsuarioEntity> findByUsername(String username);
 
-
     Optional<UsuarioEntity> findByEmailAndPassword(String email, String password);
 
     Optional<UsuarioEntity> findByEmailOrUsernameAndPassword(String email, String username, String password);
 
+    Optional<UsuarioEntity> findByEmailOrUsername(String email, String username);
 
     Page<UsuarioEntity> findByNombreContainingOrEmailContainingOrWebsiteContaining(
             String filter1, String filter2, String filter3, Pageable oPageable);
@@ -30,5 +30,5 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
     @Transactional
     @Query(value = "ALTER TABLE usuario AUTO_INCREMENT = 1", nativeQuery = true)
     void resetAutoIncrement();
-    
+
 }

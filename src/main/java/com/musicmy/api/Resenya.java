@@ -51,6 +51,13 @@ public class Resenya {
         return new ResponseEntity<ResenyaEntity>(oResenyaService.get(id), HttpStatus.OK);
     }
 
+    @GetMapping("/byalbum/{id}")
+    public ResponseEntity<Page<ResenyaEntity>> getPageByAlbum(
+            Pageable oPageable,
+            @PathVariable Long id) {
+        return new ResponseEntity<Page<ResenyaEntity>>(oResenyaService.getPageByAlbum(id,oPageable), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oResenyaService.delete(id), HttpStatus.OK);

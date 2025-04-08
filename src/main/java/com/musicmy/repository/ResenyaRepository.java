@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.musicmy.api.Album;
 import com.musicmy.entity.AlbumEntity;
 import com.musicmy.entity.ResenyaEntity;
 import com.musicmy.entity.UsuarioEntity;
@@ -22,6 +23,9 @@ public interface ResenyaRepository extends JpaRepository<ResenyaEntity, Long> {
     Optional<ResenyaEntity> findByAlbumAndUsuario(AlbumEntity album, UsuarioEntity usuario);
 
     Page<ResenyaEntity> findByUsuario(UsuarioEntity usuario, Pageable pageable);
+
+    Page<ResenyaEntity> findByAlbum(AlbumEntity album, Pageable pageable);
+
 
     @Modifying
     @Transactional

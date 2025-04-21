@@ -13,7 +13,6 @@ import com.musicmy.entity.UsuarioverfEntity;
 import com.musicmy.repository.UsuarioverfRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.transaction.Transactional;
 
 @Service
 public class EmailService {
@@ -46,7 +45,6 @@ public class EmailService {
         }
     }
 
-    @Transactional
     public void sendVerificationEmail(EmailDTO emailDTO, String verificationCode) {
 
         try {

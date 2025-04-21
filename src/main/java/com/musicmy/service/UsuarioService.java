@@ -11,9 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -23,6 +21,7 @@ import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.TipousuarioRepository;
 import com.musicmy.repository.UsuarioRepository;
+
 
 
 
@@ -180,10 +179,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     }
 
-    // TODO en el front se puede solucionar, pero como hago que si dos consultas se
-    // mandan a la vez no cree 2?
-    // TODO email or username
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public UsuarioEntity register(UsuarioEntity oUsuarioEntity) {
         if (!checkIfEmailExists(oUsuarioEntity.getEmail())) {
             oUsuarioEntity
@@ -191,7 +187,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
                             oTipousuarioService.get(oTipousuarioRepository.findByNombre("Usuario").get().getId()));
 
             UsuarioEntity usuario = oUsuarioRepository.save(oUsuarioEntity);
-            // TODO mirar de centralizar esto tmb ya que esta en AuthService
             this.oEmailService.sendVerificationEmail(
                     new EmailDTO(oUsuarioEntity.getEmail(), "Verificaccion", "Tu cuenta ha sido registrada"),
                     this.verificationCodeGenerator.generateVerificationCode());

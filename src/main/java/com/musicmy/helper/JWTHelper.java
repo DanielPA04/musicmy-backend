@@ -22,6 +22,9 @@ public class JWTHelper {
     @Value("${jwt.subject}")
     private String SUBJECT;
 
+    @Value("${jwt.subject}")
+    private String SUBJECT_VALIDATION;
+
     @Value("${jwt.issuer}")
     private String ISSUER;
 
@@ -41,6 +44,21 @@ public class JWTHelper {
                 .signWith(getSecretKey(), Jwts.SIG.HS256)
                 .compact();
     }
+
+
+    public String generateValidateToken(Map<String, String> claims) {
+        return io.jsonwebtoken.Jwts.builder()
+        .id(UUID.randomUUID().toString())
+        .claims(claims)
+        .subject(SUBJECT_VALIDATION)
+        .issuer(ISSUER)
+        .issuedAt(new Date())
+        .expiration(new Date(System.currentTimeMillis() + 60000000))
+        .signWith(getSecretKey(), Jwts.SIG.HS256)
+        .compact();
+    }
+
+
 
     private Claims getAllClaimsFromToken(String sToken) {
         return Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(sToken).getPayload();

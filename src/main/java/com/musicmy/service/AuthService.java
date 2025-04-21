@@ -87,6 +87,8 @@ public class AuthService {
         }
     }
 
+
+
     public boolean isSessionActive() {
         return request.getAttribute("email") != null;
     }

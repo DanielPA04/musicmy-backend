@@ -199,7 +199,7 @@ public class AuthService {
 
         oEmailService.sendChangePassword(
                 new EmailDTO(user.getEmail(), this.EMAIL_SUBJECT_PWD, this.EMAIL_MESSAGE_PWD),
-                user.getCodverf());
+                user.getCodresetpwd());
     }
 
     public void sendCodeResetPassword(UsuarioEntity user) {
@@ -229,8 +229,10 @@ public class AuthService {
             user.setPassword(changePwdDTO.getNewPassword());
             user.setCodresetpwd(null);
             oUsuarioRepository.save(user);
-        }
-        // TODO
+        } else {
+            // TODO
+            throw new UnauthorizedAccessException("Token no coincide");
     }
+}
 
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.musicmy.entity.UsuarioEntity;
@@ -20,6 +21,10 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
     Optional<UsuarioEntity> findByEmailAndPassword(String email, String password);
 
     Optional<UsuarioEntity> findByEmailOrUsernameAndPassword(String email, String username, String password);
+
+    @Query("SELECT u FROM UsuarioEntity u WHERE (u.email = :identifier OR u.username = :identifier) AND u.password = :password")
+    Optional<UsuarioEntity> findByIdentifierAndPassword(@Param("identifier") String identifier,
+            @Param("password") String password);
 
     Optional<UsuarioEntity> findByEmailOrUsername(String email, String username);
 

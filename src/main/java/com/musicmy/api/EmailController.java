@@ -39,12 +39,12 @@ public class EmailController {
     // return new ResponseEntity<String>("Email sent successfully", HttpStatus.OK);
     // }
 
-    @PostMapping("/verify")
-    public ResponseEntity<String> verifyCode(@RequestBody EmailDTO emailDTO) {
-        if (emailService.verifyCode(emailDTO.getAddressee(), emailDTO.getCode())) {
-            return new ResponseEntity<String>("Code verified successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<String>("Invalid code", HttpStatus.BAD_REQUEST);
-        }
-    }
+    // @PostMapping("/verify")
+    // public ResponseEntity<String> verifyCode(@RequestBody EmailDTO emailDTO) {
+    //     if (emailService.verifyCode(emailDTO.getAddressee(), emailDTO.getCode())) {
+    //         return new ResponseEntity<String>("Code verified successfully", HttpStatus.OK);
+    //     } else {
+    //         return new ResponseEntity<String>("Invalid code", HttpStatus.BAD_REQUEST);
+    //     }
+    // }
 }

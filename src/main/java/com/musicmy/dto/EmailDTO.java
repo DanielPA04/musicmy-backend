@@ -18,6 +18,10 @@ public class EmailDTO {
 
     private String code;
 
+    public EmailDTO(String addressee) {
+        this.addressee = addressee;
+    }
+
     public EmailDTO(String addressee, String subject, String message) {
         this.addressee = addressee;
         this.subject = subject;

@@ -22,9 +22,6 @@ import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.TipousuarioRepository;
 import com.musicmy.repository.UsuarioRepository;
 
-
-
-
 @Service
 public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
@@ -46,8 +43,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     @Autowired
     private EmailService oEmailService;
 
-    @Autowired
-    private VerificationCodeGenerator verificationCodeGenerator;
 
     @Override
     public Long baseCreate() {
@@ -182,14 +177,21 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public UsuarioEntity register(UsuarioEntity oUsuarioEntity) {
         if (!checkIfEmailExists(oUsuarioEntity.getEmail())) {
+
             oUsuarioEntity
                     .setTipousuario(
                             oTipousuarioService.get(oTipousuarioRepository.findByNombre("Usuario").get().getId()));
 
+            oUsuarioEntity.setImg(cargarImagenDesdeResources("img/usuario.webp"));
+
+            oUsuarioEntity.setCodverf(oAuthService.generateVerificationCode(oUsuarioEntity.getEmail()));
+
             UsuarioEntity usuario = oUsuarioRepository.save(oUsuarioEntity);
+
+            // TODO mirar que el mail dto asi estatico mal
             this.oEmailService.sendVerificationEmail(
                     new EmailDTO(oUsuarioEntity.getEmail(), "Verificaccion", "Tu cuenta ha sido registrada"),
-                    this.verificationCodeGenerator.generateVerificationCode());
+                    oUsuarioEntity.getCodverf());
 
             return usuario;
         } else {

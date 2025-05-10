@@ -50,6 +50,10 @@ public class UsuarioEntity {
     @JsonIgnore
     private byte[] img;
 
+    private String codverf;
+
+    private String codresetpwd;
+
     @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinColumn(name = "idtipousuario")
     private TipousuarioEntity tipousuario;

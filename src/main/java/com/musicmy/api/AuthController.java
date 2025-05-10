@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.musicmy.bean.LogindataBean;
-import com.musicmy.dto.EmailDTO;
+import com.musicmy.dto.ChangePwdDTO;
+import com.musicmy.dto.TokenDTO;
 import com.musicmy.service.AuthService;
 import com.musicmy.service.EmailService;
 
@@ -30,41 +31,46 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LogindataBean credentials) {
         if (authService.checkLogin(credentials)) {
             if (!authService.checkVerification(credentials.getIdentifier())) {
-                return ResponseEntity.ok("\"" + "No esta verificado, por favor verifique su correo" + "\"");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("\"" + "No esta verificado, por favor verifique su correo" + "\"");
             }
             return ResponseEntity.ok("\"" + authService.getToken(credentials.getIdentifier()) + "\"");
         } else {
-            return ResponseEntity.status(401).body("\"" + "Unauthorized" + "\"");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("\"" + "Credenciales incorrectas" + "\"");
+        }
+    }
+
+    @GetMapping("/resendCode/verify/{credential}")
+    public ResponseEntity<String> resendCode(@PathVariable String credential) {
+        if (authService.checkRegistered(credential)) {
+            if (authService.checkVerification(credential)) {
+                // TODO mirar de hacer error no ok
+                return ResponseEntity.ok("\"" + "Already verified" + "\"");
+            }
+            authService.resendCodeValidation(credential);
+            return ResponseEntity.ok("\"" + "Code sent successfully" + "\"");
+        } else {
+            return ResponseEntity.status(401).body("\"" + "No registered" + "\"");
         }
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<String> verifyCode(@RequestBody EmailDTO emailDTO) {
-        if (emailService.verifyCode(emailDTO.getAddressee(), emailDTO.getCode())) {
-            authService.verify(emailDTO);
-            return new ResponseEntity<String>("Code verified successfully", HttpStatus.OK);
+    public ResponseEntity<String> verifyCode(@RequestBody TokenDTO token) {
+        if (authService.checkVerificationToken(token.getToken())) {
+            authService.verify(token.getToken());
+            return ResponseEntity.ok("\"" + authService.getTokenByValidation(token) + "\"");
         } else {
             return new ResponseEntity<String>("Invalid code", HttpStatus.BAD_REQUEST);
         }
-    }
 
-    @PostMapping("/resend/{credential}")
-    public ResponseEntity<String> resendCode(@PathVariable String credential) {
-        if (!authService.checkRegistered(credential)) {
-            return ResponseEntity.status(401).body("\"" + "Unauthorized" + "\"");
-        }
-        //TODO
-        authService.resendCode(credential);
-        return ResponseEntity.ok("\"" + "Email sent successfully" + "\"");
     }
 
     @GetMapping("/isVerified/{credential}")
     public ResponseEntity<Boolean> isVerified(@PathVariable String credential) {
-        if (!authService.checkRegistered(credential)) {
-            // TODO
-            return ResponseEntity.status(401).body(false);
-        }
-        return ResponseEntity.ok(authService.checkVerification(credential));
+    if (!authService.checkRegistered(credential)) {
+    // TODO
+    return ResponseEntity.status(401).body(false);
+    }
+    return ResponseEntity.ok(authService.checkVerification(credential));
     }
 
     @GetMapping("/isSessionActive")
@@ -72,5 +78,32 @@ public class AuthController {
         return ResponseEntity.ok("\"" + authService.RestrictedArea() + "\"");
 
     }
+
+    @GetMapping("/sendCode/resetPassword/{credential}")
+    public ResponseEntity<String> sendCodeResetPassword(@PathVariable String credential) {
+        if (authService.checkRegistered(credential)) {
+            authService.sendCodeResetPassword(credential);
+            return ResponseEntity.ok("\"" + "Code sent successfully" + "\"");
+        } else {
+            return ResponseEntity.status(401).body("\"" + "Unauthorized" + "\"");
+        }
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePwdDTO changePwdDTO) {
+        if (changePwdDTO.getOldPassword() != null && !changePwdDTO.getOldPassword().isEmpty()) {
+            authService.changePassword(changePwdDTO);
+            // TODO response msg y mirar de comprobar email arriba
+            return ResponseEntity.ok().body("\"" + "Password changed successfully" + "\"");
+        } else if( changePwdDTO.getToken() != null && !changePwdDTO.getToken().isEmpty()) {
+            authService.changePasswordWhithToken(changePwdDTO);
+            return ResponseEntity.ok().body("\"" + "Password changed successfully" + "\"");
+        } else {
+            return ResponseEntity.status(401).body("\"" + "Unauthorized" + "\"");
+        }
+    }
+
+
+  
 
 }

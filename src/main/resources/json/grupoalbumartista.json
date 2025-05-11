@@ -1,35 +1,18 @@
 [
-    {
-      "album": {
-        "id": 1
-      },
-      "artista": {
-        "id": 1
-      }
-    },
-    {
-      "album": {
-        "id": 2
-      },
-      "artista": {
-        "id": 2
-      }
-    },
-    {
-      "album": {
-        "id": 3
-      },
-      "artista": {
-        "id": 3
-      }
-    },
-    {
-      "album": {
-        "id": 4
-      },
-      "artista": {
-        "id": 4
-      }
-    }
-  ]
-  
+  { "album": { "id": 1 }, "artista": { "id": 1 } },
+  { "album": { "id": 2 }, "artista": { "id": 2 } },
+  { "album": { "id": 3 }, "artista": { "id": 3 } },
+  { "album": { "id": 4 }, "artista": { "id": 4 } },
+  { "album": { "id": 5 }, "artista": { "id": 5 } },
+  { "album": { "id": 6 }, "artista": { "id": 6 } },
+  { "album": { "id": 7 }, "artista": { "id": 3 } },
+  { "album": { "id": 8 }, "artista": { "id": 7 } },
+  { "album": { "id": 9 }, "artista": { "id": 8 } },
+  { "album": { "id": 10 }, "artista": { "id": 9 } },
+  { "album": { "id": 11 }, "artista": { "id": 10 } },
+  { "album": { "id": 12 }, "artista": { "id": 1 } },
+
+   { "album": { "id": 13 }, "artista": { "id": 11 } }, 
+    { "album": { "id": 13 }, "artista": { "id": 12 } }, 
+    { "album": { "id": 13 }, "artista": { "id": 13 } }  
+]

@@ -3,7 +3,7 @@
         "username": "juanpe01",
         "nombre": "Juan Pérez",
         "fecha": "1990-05-15",
-        "descripcion": "Descripción del usuario",
+        "descripcion": "Amante de la música clásica y el rock de los 80. Coleccionista de vinilos.",
         "email": "juan@example.com",
         "password": "10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f",
         "website": "https://usuario1.com",
@@ -13,10 +13,52 @@
         "username": "marmez08",
         "nombre": "María Gómez",
         "fecha": "1985-10-20",
-        "descripcion": "Otra descripción",
+        "descripcion": "Crítica musical especializada en rock alternativo y música independiente.",
         "email": "maria@example.com",
         "password": "10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f",
         "website": "https://usuario2.com",
         "tipousuario": { "id": 2 }
+    },
+    {
+        "username": "carlitos99",
+        "nombre": "Carlos Rodríguez",
+        "fecha": "1995-03-10",
+        "descripcion": "Nuevo en la plataforma pero con gran pasión por el jazz y el blues.",
+        "email": "carlos@example.com",
+        "password": "10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f",
+        "website": "https://usuario3.com",
+        "tipousuario": { "id": 2 }
+    },
+    {
+        "username": "laura_music",
+        "nombre": "Laura Sánchez",
+        "fecha": "1988-07-22",
+        "descripcion": "Productora musical y bloguera especializada en música electrónica.",
+        "email": "laura@example.com",
+        "password": "10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f",
+        "website": "https://usuario4.com",
+        "tipousuario": { "id": 2 }
+    },
+    
+    {
+        "username": "trapking23",
+        "nombre": "Carlos Trap",
+        "fecha": "1995-08-12",
+        "descripcion": "Especialista en música trap y hip-hop underground.",
+        "email": "trapking@example.com",
+        "password": "10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f",
+        "website": "https://trapmusiclover.com",
+        "tipousuario": { "id": 2 }
+    },
+    {
+        "username": "hiphophead",
+        "nombre": "María HipHop",
+        "fecha": "1990-03-25",
+        "descripcion": "Crítica musical especializada en cultura hip-hop.",
+        "email": "mariahh@example.com",
+        "password": "10a28e5c8e725bcf4454d93456000b2d9d934f3c816525fabf9a6106f676556f",
+        "website": "https://hiphopheads.net",
+        "tipousuario": { "id": 2 }
     }
+
 ]

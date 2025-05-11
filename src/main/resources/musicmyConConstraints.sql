@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: database:3306
--- Tiempo de generación: 11-05-2025 a las 09:57:20
+-- Tiempo de generación: 11-05-2025 a las 10:10:11
 -- Versión del servidor: 8.4.2
 -- Versión de PHP: 8.2.24
 
@@ -23,11 +23,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `album` (
   `id` int NOT NULL,
-  `nombre` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   `fecha` date NOT NULL,
-  `genero` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
-  `descripcion` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
-  `discografica` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `genero` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `discografica` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   `img` longblob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
@@ -39,8 +39,8 @@ CREATE TABLE `album` (
 
 CREATE TABLE `artista` (
   `id` int NOT NULL,
-  `nombre` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
-  `nombreReal` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `nombre` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
+  `nombreReal` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `descripcion` varchar(500) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `spotify` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `img` blob
@@ -67,9 +67,9 @@ CREATE TABLE `grupoalbumartista` (
 CREATE TABLE `resenya` (
   `id` int NOT NULL,
   `nota` int DEFAULT NULL,
-  `descripcion` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `fecha` date DEFAULT NULL,
-  `website` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `idAlbum` int DEFAULT NULL,
   `idUsuario` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
@@ -93,30 +93,17 @@ CREATE TABLE `tipousuario` (
 
 CREATE TABLE `usuario` (
   `id` int NOT NULL,
-  `username` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
-  `nombre` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `fecha` date DEFAULT NULL,
-  `descripcion` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
-  `website` varchar(255) COLLATE utf32_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `img` longblob,
   `codverf` varchar(300) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `codresetpwd` varchar(300) CHARACTER SET utf32 COLLATE utf32_unicode_ci DEFAULT NULL,
   `idTipoUsuario` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuarioverf`
---
-
-CREATE TABLE `usuarioverf` (
-  `id` int NOT NULL,
-  `email` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
-  `code` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
-  `exp` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
@@ -139,13 +126,17 @@ ALTER TABLE `artista`
 -- Indices de la tabla `grupoalbumartista`
 --
 ALTER TABLE `grupoalbumartista`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_grupo_album` (`idAlbum`),
+  ADD KEY `fk_grupo_artista` (`idArtista`);
 
 --
 -- Indices de la tabla `resenya`
 --
 ALTER TABLE `resenya`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_resenya_usuario` (`idUsuario`),
+  ADD KEY `fk_resenya_album` (`idAlbum`);
 
 --
 -- Indices de la tabla `tipousuario`
@@ -157,13 +148,8 @@ ALTER TABLE `tipousuario`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `usuarioverf`
---
-ALTER TABLE `usuarioverf`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_usuario_tipousuario` (`idTipoUsuario`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -206,46 +192,26 @@ ALTER TABLE `usuario`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuarioverf`
+-- Restricciones para tablas volcadas
 --
-ALTER TABLE `usuarioverf`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-COMMIT;
 
+--
+-- Filtros para la tabla `grupoalbumartista`
+--
+ALTER TABLE `grupoalbumartista`
+  ADD CONSTRAINT `fk_grupo_album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_grupo_artista` FOREIGN KEY (`idArtista`) REFERENCES `artista` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- Añadir las claves foráneas y restricciones
+--
+-- Filtros para la tabla `resenya`
+--
+ALTER TABLE `resenya`
+  ADD CONSTRAINT `fk_resenya_album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_resenya_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- usuario → tipousuario
+--
+-- Filtros para la tabla `usuario`
+--
 ALTER TABLE `usuario`
-ADD CONSTRAINT `fk_usuario_tipousuario`
-FOREIGN KEY (`idTipoUsuario`) REFERENCES `tipousuario`(`id`)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
--- resenya → usuario
-ALTER TABLE `resenya`
-ADD CONSTRAINT `fk_resenya_usuario`
-FOREIGN KEY (`idUsuario`) REFERENCES `usuario`(`id`)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
--- resenya → album
-ALTER TABLE `resenya`
-ADD CONSTRAINT `fk_resenya_album`
-FOREIGN KEY (`idAlbum`) REFERENCES `album`(`id`)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
--- grupoalbumartista → album
-ALTER TABLE `grupoalbumartista`
-ADD CONSTRAINT `fk_grupo_album`
-FOREIGN KEY (`idAlbum`) REFERENCES `album`(`id`)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
-
--- grupoalbumartista → artista
-ALTER TABLE `grupoalbumartista`
-ADD CONSTRAINT `fk_grupo_artista`
-FOREIGN KEY (`idArtista`) REFERENCES `artista`(`id`)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_usuario_tipousuario` FOREIGN KEY (`idTipoUsuario`) REFERENCES `tipousuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;

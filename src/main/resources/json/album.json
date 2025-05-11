@@ -26,6 +26,72 @@
       "genero": "Hard rock",
       "descripcion": "El álbum de AC/DC que marcó el regreso de la banda con el vocalista Brian Johnson tras la muerte de Bon Scott. Con el icónico 'You Shook Me All Night Long'.",
       "discografica": "Atlantic Records"
+    },
+    {
+      "nombre": "Rumours",
+      "fecha": "1977-02-04",
+      "genero": "Soft rock",
+      "descripcion": "Álbum de Fleetwood Mac lleno de éxitos como 'Go Your Own Way' y 'Dreams', creado durante un período de tensiones personales en la banda.",
+      "discografica": "Warner Bros. Records"
+    },
+    {
+      "nombre": "Nevermind",
+      "fecha": "1991-09-24",
+      "genero": "Grunge",
+      "descripcion": "El álbum que catapultó a Nirvana a la fama mundial, con el éxito 'Smells Like Teen Spirit' que definió una generación.",
+      "discografica": "DGC Records"
+    },
+    
+    
+
+    {
+      "nombre": "The Wall",
+      "fecha": "1979-11-30",
+      "genero": "Progressive rock",
+      "descripcion": "Ópera rock de Pink Floyd que explora el aislamiento y la alienación.",
+      "discografica": "Harvest Records"
+    },
+    {
+      "nombre": "Born to Run",
+      "fecha": "1975-08-25",
+      "genero": "Rock",
+      "descripcion": "Álbum seminal de Bruce Springsteen que lo lanzó al estrellato.",
+      "discografica": "Columbia Records"
+    },
+    {
+      "nombre": "Like a Virgin",
+      "fecha": "1984-11-12",
+      "genero": "Pop, dance-pop",
+      "descripcion": "Segundo álbum de Madonna que la consolidó como reina del pop.",
+      "discografica": "Sire Records"
+    },
+    {
+      "nombre": "Purple Rain",
+      "fecha": "1984-06-25",
+      "genero": "Pop rock, R&B",
+      "descripcion": "Banda sonora de Prince que mezcla rock, pop y soul de forma magistral.",
+      "discografica": "Warner Bros. Records"
+    },
+    {
+      "nombre": "The Joshua Tree",
+      "fecha": "1987-03-09",
+      "genero": "Rock",
+      "descripcion": "Álbum de U2 que explora temas espirituales y políticos.",
+      "discografica": "Island Records"
+    },
+    {
+      "nombre": "Bad",
+      "fecha": "1987-08-31",
+      "genero": "Pop, R&B",
+      "descripcion": "Séptimo álbum de Michael Jackson con hits como 'Smooth Criminal'.",
+      "discografica": "Epic Records"
+    },
+    {
+        "nombre": "Without Warning",
+        "fecha": "2017-10-31",
+        "genero": "Hip-Hop, Trap",
+        "descripcion": "Álbum colaborativo sorpresa de 21 Savage, Offset y Metro Boomin lanzado en Halloween de 2017. Contiene sonidos oscuros y líricas agresivas características del trap moderno.",
+        "discografica": "Slaughter Gang, Boominati Worldwide, Epic Records"
     }
-  ]
-  
+
+]

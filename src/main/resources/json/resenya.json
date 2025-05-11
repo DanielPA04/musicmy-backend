@@ -1,51 +1,215 @@
 [
-    {
-      "nota": 9,
-      "descripcion": "Un álbum icónico que define el género pop. Las canciones como 'Billie Jean' y 'Beat It' siguen siendo atemporales. La producción es impecable y la voz de Michael Jackson sigue siendo única.",
-      "fecha": "2025-03-11",
-      "website": "https://usuario1.com",
-      "album": {
-        "id": 1
-      },
-      "usuario": {
-        "id": 1
-      }
+  {
+    "nota": 9,
+    "descripcion": "Un álbum icónico que define el género pop. Las canciones como 'Billie Jean' y 'Beat It' siguen siendo atemporales. La producción es impecable y la voz de Michael Jackson sigue siendo única.",
+    "fecha": "2025-03-11",
+    "website": "https://usuario1.com",
+    "album": {
+      "id": 1
     },
-    {
-      "nota": 7,
-      "descripcion": "Gran álbum, pero algunas canciones me parecen un poco repetitivas. A pesar de ello, la calidad musical y las letras son excepcionales. 'Thriller' es un clásico que nunca pasará de moda.",
-      "fecha": "2025-03-11",
-      "website": "https://usuario1.com",
-      "album": {
-        "id": 2
-      },
-      "usuario": {
-        "id": 1
-      }
-    },
-    {
-      "nota": 6,
-      "descripcion": "Un álbum que no me convenció por completo. Algunas canciones me parecieron demasiado experimentales, aunque la producción es excelente. Aún así, tiene varios momentos brillantes.",
-      "fecha": "2025-03-11",
-      "website": "https://usuario2.com",
-      "album": {
-        "id": 3
-      },
-      "usuario": {
-        "id": 2
-      }
-    },
-    {
-      "nota": 7,
-      "descripcion": "Me encantó la mezcla de géneros y sonidos que presenta. Aunque algunos temas no son tan pegajosos como otros, la ejecución y el mensaje son poderosos. Un buen trabajo en general.",
-      "fecha": "2025-03-11",
-      "website": "https://usuario2.com",
-      "album": {
-        "id": 4
-      },
-      "usuario": {
-        "id": 2
-      }
+    "usuario": {
+      "id": 1
     }
-  ]
+  },
+  {
+    "nota": 7,
+    "descripcion": "Gran álbum, pero algunas canciones me parecen un poco repetitivas. A pesar de ello, la calidad musical y las letras son excepcionales. 'Thriller' es un clásico que nunca pasará de moda.",
+    "fecha": "2025-03-11",
+    "website": "https://usuario1.com",
+    "album": {
+      "id": 2
+    },
+    "usuario": {
+      "id": 1
+    }
+  },
+  {
+    "nota": 6,
+    "descripcion": "Un álbum que no me convenció por completo. Algunas canciones me parecieron demasiado experimentales, aunque la producción es excelente. Aún así, tiene varios momentos brillantes.",
+    "fecha": "2025-03-11",
+    "website": "https://usuario2.com",
+    "album": {
+      "id": 3
+    },
+    "usuario": {
+      "id": 2
+    }
+  },
+  {
+    "nota": 7,
+    "descripcion": "Me encantó la mezcla de géneros y sonidos que presenta. Aunque algunos temas no son tan pegajosos como otros, la ejecución y el mensaje son poderosos. Un buen trabajo en general.",
+    "fecha": "2025-03-11",
+    "website": "https://usuario2.com",
+    "album": {
+      "id": 4
+    },
+    "usuario": {
+      "id": 2
+    }
+  },
+  {
+    "nota": 8,
+    "descripcion": "Rumours es una obra maestra del soft rock. Cada canción cuenta una historia personal y la química entre los miembros de la banda es palpable. Música para el alma.",
+    "fecha": "2025-04-15",
+    "website": "https://usuario1.com",
+    "album": {
+      "id": 5
+    },
+    "usuario": {
+      "id": 1
+    }
+  },
+  {
+    "nota": 9,
+    "descripcion": "Nevermind cambió el curso de la música moderna. La energía cruda combinada con melodías pegadizas creó un sonido único que definió una generación.",
+    "fecha": "2025-04-20",
+    "website": "https://usuario2.com",
+    "album": {
+      "id": 6
+    },
+    "usuario": {
+      "id": 2
+    }
+  },
+
   
+
+
+  {
+    "nota": 8,
+    "descripcion": "The Wall es una obra maestra conceptual. La narrativa y la música se complementan perfectamente.",
+    "fecha": "2025-05-01",
+    "website": "https://usuario1.com",
+    "album": { "id": 7 },
+    "usuario": { "id": 1 }
+  },
+  {
+    "nota": 9,
+    "descripcion": "Born to Run captura la esencia del sueño americano. Springsteen en su mejor momento.",
+    "fecha": "2025-05-02",
+    "website": "https://usuario1.com",
+    "album": { "id": 8 },
+    "usuario": { "id": 1 }
+  },
+  {
+    "nota": 6,
+    "descripcion": "Like a Virgin marcó una era, pero prefiero el trabajo posterior de Madonna.",
+    "fecha": "2025-05-03",
+    "website": "https://usuario1.com",
+    "album": { "id": 9 },
+    "usuario": { "id": 1 }
+  },
+  {
+    "nota": 10,
+    "descripcion": "Purple Rain es simplemente perfecto. Prince demuestra por qué era un genio musical.",
+    "fecha": "2025-05-04",
+    "website": "https://usuario1.com",
+    "album": { "id": 10 },
+    "usuario": { "id": 1 }
+  },
+  {
+    "nota": 8,
+    "descripcion": "The Joshua Tree tiene algunas de las mejores canciones de U2. Un clásico indiscutible.",
+    "fecha": "2025-05-05",
+    "website": "https://usuario1.com",
+    "album": { "id": 11 },
+    "usuario": { "id": 1 }
+  },
+  {
+    "nota": 7,
+    "descripcion": "Bad es bueno, pero no alcanza la magia de Thriller. Aún así, tiene momentos brillantes.",
+    "fecha": "2025-05-06",
+    "website": "https://usuario1.com",
+    "album": { "id": 12 },
+    "usuario": { "id": 1 }
+  },
+
+  {
+    "nota": 7,
+    "descripcion": "The Wall es ambicioso pero a veces demasiado pretencioso. Aún así, tiene momentos brillantes.",
+    "fecha": "2025-05-01",
+    "website": "https://usuario2.com",
+    "album": { "id": 7 },
+    "usuario": { "id": 2 }
+  },
+  {
+    "nota": 8,
+    "descripcion": "Born to Run es pura energía rock. Springsteen conecta con el oyente de manera visceral.",
+    "fecha": "2025-05-02",
+    "website": "https://usuario2.com",
+    "album": { "id": 8 },
+    "usuario": { "id": 2 }
+  },
+  {
+    "nota": 9,
+    "descripcion": "Like a Virgin revolucionó la música pop. Madonna supo crear un ícono generacional.",
+    "fecha": "2025-05-03",
+    "website": "https://usuario2.com",
+    "album": { "id": 9 },
+    "usuario": { "id": 2 }
+  },
+  {
+    "nota": 9,
+    "descripcion": "Purple Rain muestra la versatilidad de Prince. Del rock al funk, todo suena perfecto.",
+    "fecha": "2025-05-04",
+    "website": "https://usuario2.com",
+    "album": { "id": 10 },
+    "usuario": { "id": 2 }
+  },
+  {
+    "nota": 7,
+    "descripcion": "The Joshua Tree tiene canciones memorables, pero algunas piezas no envejecieron bien.",
+    "fecha": "2025-05-05",
+    "website": "https://usuario2.com",
+    "album": { "id": 11 },
+    "usuario": { "id": 2 }
+  },
+  {
+    "nota": 8,
+    "descripcion": "Bad demuestra la evolución de Michael Jackson. 'Smooth Criminal' es una obra maestra.",
+    "fecha": "2025-05-06",
+    "website": "https://usuario2.com",
+    "album": { "id": 12 },
+    "usuario": { "id": 2 }
+  },
+  {
+    "nota": 6,
+    "descripcion": "The Wall es interesante conceptualmente, pero demasiado largo para mi gusto.",
+    "fecha": "2025-05-07",
+    "website": "https://usuario3.com",
+    "album": { "id": 7 },
+    "usuario": { "id": 3 }
+  },
+  {
+    "nota": 9,
+    "descripcion": "The Wall es una experiencia auditiva única. La producción es impecable.",
+    "fecha": "2025-05-07",
+    "website": "https://usuario4.com",
+    "album": { "id": 7 },
+    "usuario": { "id": 4 }
+  },
+   {
+        "nota": 9,
+        "descripcion": "Un proyecto oscuro y cohesivo. La producción de Metro Boomin es impecable, y la química entre 21 Savage y Offset es eléctrica. 'Ric Flair Drip' es el himno indiscutible.",
+        "fecha": "2023-11-15",
+        "website": "https://trapmusiclover.com",
+        "album": { "id": 13 },
+        "usuario": { "id": 5 }
+    },
+    {
+        "nota": 8,
+        "descripcion": "El ambiente de Halloween funciona perfectamente para este álbum. 21 Savage roba el show con su entrega mortal, pero Offset tiene momentos brillantes como en 'Mad Stalkers'.",
+        "fecha": "2023-10-31",
+        "website": "https://hiphopheads.net",
+        "album": { "id": 13 },
+        "usuario": { "id": 6 }
+    },
+    {
+        "nota": 7,
+        "descripcion": "Buen álbum pero esperaba más colaboraciones entre los artistas. Las producciones son brutales, aunque algunas pistas se sienten repetitivas.",
+        "fecha": "2023-09-22",
+        "website": "https://rapanalytics.com",
+        "album": { "id": 13 },
+        "usuario": { "id": 4 }
+    } 
+]

@@ -32,9 +32,7 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
     @Autowired
     private AuthService oAuthService;
 
-   
-
-   @Override
+    @Override
     public Long baseCreate() {
         try {
             // Leer el JSON
@@ -49,7 +47,11 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
             for (ArtistaEntity artista : artistas) {
 
                 // Cargar imagen desde resources/img si existe
-                byte[] imagen = cargarImagenDesdeResources("img/" + artista.getNombre().replace(" ", "").toLowerCase() + ".webp");
+                String nombreLimpio = artista.getNombre()
+                        .replaceAll("[^a-zA-Z0-9]", "") // elimina todo lo que no sea letra o número
+                        .toLowerCase();
+
+                byte[] imagen = cargarImagenDesdeResources("img/" + nombreLimpio + ".webp");
                 if (imagen == null) {
                     imagen = cargarImagenDesdeResources("img/artista.webp");
                 }
@@ -83,6 +85,7 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
         oArtistaRepository.resetAutoIncrement();
 
     }
+
     @Override
     public ArtistaEntity randomSelection() {
         return oArtistaRepository.findAll().get(oRandomService.getRandomInt(0, (int) oArtistaRepository.count() - 1));
@@ -101,14 +104,15 @@ public class ArtistaService implements ServiceInterface<ArtistaEntity> {
 
     @Override
     public ArtistaEntity get(Long id) {
-        return oArtistaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Artista con el id " + id + " no encontrado"));
+        return oArtistaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Artista con el id " + id + " no encontrado"));
     }
 
     public List<ArtistaEntity> getByIdAlbum(Long id) {
         return oArtistaRepository.findByAlbumId(id).get();
     }
 
-      public byte[] getImgById(Long id) {
+    public byte[] getImgById(Long id) {
         ArtistaEntity artista = get(id);
         return artista.getImg();
     }

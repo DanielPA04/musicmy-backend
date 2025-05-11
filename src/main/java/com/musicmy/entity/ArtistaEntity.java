@@ -26,13 +26,12 @@ public class ArtistaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 3, max = 255)
     private String nombre;
 
-    @Size(min = 3, max = 255)
+    
     private String nombrereal;
 
-    @Size(min = 3, max = 255)
+    @Size(min = 3, max = 500)
     private String descripcion;
 
     private String spotify;

@@ -22,6 +22,63 @@
       "nombrereal": "AC/DC",
       "descripcion": "Banda de hard rock australiana, conocida por su sonido crudo y poderoso. 'Back in Black' es uno de los álbumes más vendidos del mundo.",
       "spotify": "https://open.spotify.com/artist/0v7w8i6sh6pLop4k76v1pr"
-    }
-  ]
+    },
+    {
+      "nombre": "Fleetwood Mac",
+      "nombrereal": "Fleetwood Mac",
+      "descripcion": "Banda británico-estadounidense conocida por su mezcla de rock y pop, con álbumes legendarios como 'Rumours'.",
+      "spotify": "https://open.spotify.com/artist/08GQAI4eElDnROBrJRGE0X"
+    },
+    {
+      "nombre": "Nirvana",
+      "nombrereal": "Nirvana",
+      "descripcion": "Banda de grunge estadounidense que lideró el movimiento musical de los 90 con su álbum 'Nevermind'.",
+      "spotify": "https://open.spotify.com/artist/6olE6TJLqED3rqDCT0FyPh"
+    },
+    
   
+
+    {
+      "nombre": "Bruce Springsteen",
+      "nombrereal": "Bruce Frederick Joseph Springsteen",
+      "descripcion": "Cantautor estadounidense conocido como 'The Boss' por su influencia en el rock.",
+      "spotify": "https://open.spotify.com/artist/3eqjTLE0HfPfh78zjh6TqT"
+    },
+    {
+      "nombre": "Madonna",
+      "nombrereal": "Madonna Louise Ciccone",
+      "descripcion": "La 'Reina del Pop', conocida por reinventarse constantemente.",
+      "spotify": "https://open.spotify.com/artist/6tbjWDEIzxoDsBA1FuhfPW"
+    },
+    {
+      "nombre": "Prince",
+      "nombrereal": "Prince Rogers Nelson",
+      "descripcion": "Artista multifacético que mezclaba rock, funk y soul de forma única.",
+      "spotify": "https://open.spotify.com/artist/5a2EaR3hamoenG9rDuVn8j"
+    },
+    {
+      "nombre": "U2",
+      "nombrereal": "U2",
+      "descripcion": "Banda irlandesa de rock conocida por su sonido épico y letras espirituales.",
+      "spotify": "https://open.spotify.com/artist/51Blml2LZPmy7TTiAg47vQ"
+    },
+    {
+        "nombre": "21 Savage",
+        "nombrereal": "Shéyaa Bin Abraham-Joseph",
+        "descripcion": "Rapero británico-estadounidense conocido por su estilo frío y líricas sobre la vida en las calles.",
+        "spotify": "https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft"
+    },
+    {
+        "nombre": "Offset",
+        "nombrereal": "Kiari Kendrell Cephus",
+        "descripcion": "Miembro del grupo Migos, conocido por su flow único y contribuciones al trap moderno.",
+        "spotify": "https://open.spotify.com/artist/4DdkRBBYG6Yk9Ka8tdJ9BW"
+    },
+    {
+        "nombre": "Metro Boomin",
+        "nombrereal": "Leland Tyler Wayne",
+        "descripcion": "Productor musical pionero del sonido trap, colaborador frecuente de artistas como Future y Drake.",
+        "spotify": "https://open.spotify.com/artist/0iEtIxbK0KxaSlF7G42ZOp"
+    }
+
+]

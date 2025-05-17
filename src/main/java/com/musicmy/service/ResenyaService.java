@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.entity.ResenyaEntity;
+import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.repository.ResenyaRepository;
 
 import jakarta.transaction.Transactional;
@@ -32,8 +33,7 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
     @Autowired
     private RandomService oRandomService;
 
-   
- @Override
+    @Override
     public Long baseCreate() {
         try {
             // Leer el JSON
@@ -47,7 +47,6 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
 
             for (ResenyaEntity resenya : resenyas) {
 
-               
                 // Guardar en la base de datos
                 oResenyaRepository.save(resenya);
             }
@@ -57,8 +56,6 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
             return 0L;
         }
     }
-
-   
 
     @Transactional
     public void reiniciarAutoIncrement() {
@@ -85,6 +82,16 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
 
     public Page<ResenyaEntity> getPageByUsuario(Long id, Pageable oPageable) {
         return oResenyaRepository.findByUsuario(oUsuarioService.get(id), oPageable);
+    }
+
+    public Page<ResenyaEntity> getResenyasRecientesByUsuario(Long idUsuario, Pageable pageable) {
+        UsuarioEntity usuario = oUsuarioService.get(idUsuario);
+        return oResenyaRepository.findByUsuarioOrderByFechaDesc(usuario, pageable);
+    }
+
+    public Page<ResenyaEntity> getResenyasTopByUsuario(Long idUsuario, Pageable pageable) {
+        UsuarioEntity usuario = oUsuarioService.get(idUsuario);
+        return oResenyaRepository.findByUsuarioOrderByNotaDesc(usuario, pageable);
     }
 
     public Page<ResenyaEntity> getPageByAlbum(Long id, Pageable oPageable) {
@@ -151,8 +158,9 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
                 .isPresent();
     }
 
-    public boolean isResenyaAlreadyExists(String email , Long idAlbum) {
-        return oResenyaRepository.findByAlbumAndUsuario(oAlbumService.get(idAlbum), oUsuarioService.getByEmail(email)).isPresent();
+    public boolean isResenyaAlreadyExists(String email, Long idAlbum) {
+        return oResenyaRepository.findByAlbumAndUsuario(oAlbumService.get(idAlbum), oUsuarioService.getByEmail(email))
+                .isPresent();
     }
 
 }

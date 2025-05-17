@@ -59,7 +59,7 @@ public class Usuario {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.create(UsuarioEntity), HttpStatus.OK);
     }
 
-    @PostMapping("/img")
+    @PostMapping("/create/img")
     public ResponseEntity<UsuarioEntity> create(
             @RequestParam("username") String username,
             @RequestParam("nombre") String nombre,
@@ -96,7 +96,7 @@ public class Usuario {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.update(UsuarioEntity), HttpStatus.OK);
     }
 
-    @PutMapping("/img")
+    @PutMapping("/update/img")
     public ResponseEntity<UsuarioEntity> update(
             @RequestParam("id") Long id,
             @RequestParam("username") String username,
@@ -112,7 +112,7 @@ public class Usuario {
         try {
 
             return new ResponseEntity<>(
-                    oUsuarioService.create(
+                    oUsuarioService.update(
                             new UsuarioEntity(id, username, nombre, LocalDate.parse(fecha), descripcion,
                                     email, password, website, img.getBytes(),
                                     new ObjectMapper().readValue(tipousuarioJson, TipousuarioEntity.class))),

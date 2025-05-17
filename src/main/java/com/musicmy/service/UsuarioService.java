@@ -43,7 +43,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     @Autowired
     private EmailService oEmailService;
 
-
     @Override
     public Long baseCreate() {
         try {
@@ -122,24 +121,13 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     @Override
     public UsuarioEntity get(Long id) {
-        if (oAuthService.isAdministrador() || oAuthService.isOneSelf(id)) {
-            return oUsuarioRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Usuario con el id " + id + " no encontrado"));
-        } else {
-            throw new UnauthorizedAccessException("No autorizado");
-        }
+        return oUsuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con el id " + id + " no encontrado"));
+
     }
 
-    // TODO username
     public UsuarioEntity getByEmail(String email) {
-        UsuarioEntity usuario = oUsuarioRepository.findByEmail(email).get();
-        if (oAuthService.isAdministrador()) {
-            return usuario;
-        } else if (oAuthService.isOneSelf(usuario.getId())) {
-            return usuario;
-        } else {
-            throw new UnauthorizedAccessException("No autorizado");
-        }
+        return oUsuarioRepository.findByEmail(email).get();
     }
 
     public byte[] getImgById(Long id) {
@@ -204,9 +192,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     public UsuarioEntity update(UsuarioEntity oUsuarioEntity) {
         if (oAuthService.isOneSelf(oUsuarioEntity.getId()) || oAuthService.isAdministrador()) {
             UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
-            if (oUsuarioEntity.getUsername() != null) {
-                oUsuarioEntityFromDatabase.setUsername(oUsuarioEntity.getUsername());
-            }
+
             if (oUsuarioEntity.getNombre() != null) {
                 oUsuarioEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
             }
@@ -218,12 +204,20 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             }
 
             if (oAuthService.isAdministrador()) {
+                if (oUsuarioEntity.getUsername() != null) {
+                    oUsuarioEntityFromDatabase.setUsername(oUsuarioEntity.getUsername());
+                }
+
                 if (oUsuarioEntity.getPassword() != null) {
                     oUsuarioEntityFromDatabase.setPassword(oUsuarioEntity.getPassword());
                 }
 
                 if (oUsuarioEntity.getEmail() != null) {
                     oUsuarioEntityFromDatabase.setEmail(oUsuarioEntity.getEmail());
+                }
+
+                if (oUsuarioEntity.getTipousuario() != null) {
+                    oUsuarioEntityFromDatabase.setTipousuario(oUsuarioEntity.getTipousuario());
                 }
             }
             if (oUsuarioEntity.getWebsite() != null) {
@@ -233,9 +227,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             if (oUsuarioEntity.getImg() != null) {
                 oUsuarioEntityFromDatabase.setImg(oUsuarioEntity.getImg());
             }
-            if (oUsuarioEntity.getTipousuario() != null) {
-                oUsuarioEntityFromDatabase.setTipousuario(oUsuarioEntity.getTipousuario());
-            }
+
 
             return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
         } else {

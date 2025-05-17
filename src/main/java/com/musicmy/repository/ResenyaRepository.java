@@ -20,8 +20,13 @@ public interface ResenyaRepository extends JpaRepository<ResenyaEntity, Long> {
 
     Page<ResenyaEntity> findByUsuario(UsuarioEntity usuario, Pageable pageable);
 
-    Page<ResenyaEntity> findByAlbum(AlbumEntity album, Pageable pageable);
+    // Reseñas más recientes del usuario (ordenadas por fecha descendente)
+    Page<ResenyaEntity> findByUsuarioOrderByFechaDesc(UsuarioEntity usuario, Pageable pageable);
 
+    // Reseñas con mayor nota del usuario (ordenadas por nota descendente)
+    Page<ResenyaEntity> findByUsuarioOrderByNotaDesc(UsuarioEntity usuario, Pageable pageable);
+
+    Page<ResenyaEntity> findByAlbum(AlbumEntity album, Pageable pageable);
 
     @Modifying
     @Transactional

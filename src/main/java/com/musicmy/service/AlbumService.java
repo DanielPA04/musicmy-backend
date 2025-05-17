@@ -11,7 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -113,7 +112,27 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
 
     public Page<AlbumEntity> getPageLastMonth(Pageable pageable) {
         return oAlbumRepository.findByFechaBetween(LocalDate.now().minusMonths(1), LocalDate.now(), pageable);
+    }
 
+    public Page<AlbumEntity> getPageNew(Pageable pageable) {
+        return oAlbumRepository.findAllByOrderByFechaDesc(pageable);
+    }
+
+     // albumes mas populares (mas reseñas en total)
+    public Page<AlbumEntity> getMostPopularAlbums(Pageable pageable) {
+        return oAlbumRepository.findAllByOrderByResenyaCountDesc(pageable);
+    }
+
+    // albumes mas populares en los ultimos 3 meses
+    public Page<AlbumEntity> getRecentlyPopularAlbums(Pageable pageable) {
+        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(3);
+        return oAlbumRepository.findAllPopularSince(threeMonthsAgo, pageable);
+    }
+
+    
+    // Álbumes mejor valorados (todos los tiempos)
+    public Page<AlbumEntity> getTopRatedAlbums(Pageable pageable) {
+        return oAlbumRepository.findAllByOrderByAverageRatingDesc(pageable);
     }
 
     public byte[] getImgById(Long id) {

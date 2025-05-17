@@ -11,6 +11,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,32 @@ public class Album {
     @GetMapping("/lastmonth")
     public ResponseEntity<Page<AlbumEntity>> getPageLastMonth(Pageable oPageable) {
         return new ResponseEntity<>(oAlbumService.getPageLastMonth(oPageable), HttpStatus.OK);
+    }
+
+     @GetMapping("/new")
+    public ResponseEntity<Page<AlbumEntity>> getPageNew(Pageable oPageable) {
+        return new ResponseEntity<>(oAlbumService.getPageNew(oPageable), HttpStatus.OK);
+    }
+
+     // Álbumes más populares (todos los tiempos)
+    @GetMapping("/popular")
+    public Page<AlbumEntity> getMostPopularAlbums(
+            @PageableDefault(size = 10, sort = "id", direction = Direction.DESC) Pageable pageable) {
+        return oAlbumService.getMostPopularAlbums(pageable);
+    }
+
+    // Álbumes populares recientemente (últimos 3 meses)
+    @GetMapping("/popular/recent")
+    public Page<AlbumEntity> getRecentlyPopularAlbums(
+            @PageableDefault(size = 10, sort = "id", direction = Direction.DESC) Pageable pageable) {
+        return oAlbumService.getRecentlyPopularAlbums(pageable);
+    }
+
+        // Álbumes con mejor puntuación promedio
+    @GetMapping("/top-rated")
+    public Page<AlbumEntity> getTopRatedAlbums(
+            @PageableDefault(size = 10) Pageable pageable) {
+        return oAlbumService.getTopRatedAlbums(pageable);
     }
 
     @GetMapping("/count")

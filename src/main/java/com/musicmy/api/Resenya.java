@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import com.musicmy.dto.ResenyaWithLikeCountDTO;
 import com.musicmy.entity.ResenyaEntity;
 import com.musicmy.service.ResenyaService;
 import org.springframework.data.domain.Sort;
-
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
@@ -40,23 +41,22 @@ public class Resenya {
     public ResponseEntity<Page<ResenyaEntity>> getPageByUsuario(
             Pageable oPageable,
             @PathVariable Long id) {
-        return new ResponseEntity<Page<ResenyaEntity>>(oResenyaService.getPageByUsuario(id,oPageable), HttpStatus.OK);
+        return new ResponseEntity<Page<ResenyaEntity>>(oResenyaService.getPageByUsuario(id, oPageable), HttpStatus.OK);
     }
 
     @GetMapping("/byusuario/{id}/recent")
-public ResponseEntity<Page<ResenyaEntity>> getResenyasRecientes(
-        @PathVariable("id") Long id,
-        @PageableDefault(size = 10, sort = "fecha", direction = Sort.Direction.DESC) Pageable pageable) {
-    return ResponseEntity.ok(oResenyaService.getResenyasRecientesByUsuario(id, pageable));
-}
+    public ResponseEntity<Page<ResenyaEntity>> getResenyasRecientes(
+            @PathVariable("id") Long id,
+            @PageableDefault(size = 10, sort = "fecha", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(oResenyaService.getResenyasRecientesByUsuario(id, pageable));
+    }
 
-@GetMapping("/byusuario/{id}/best")
-public ResponseEntity<Page<ResenyaEntity>> getResenyasTop(
-        @PathVariable("id") Long id,
-        @PageableDefault(size = 10, sort = "nota", direction = Sort.Direction.DESC) Pageable pageable) {
-    return ResponseEntity.ok(oResenyaService.getResenyasTopByUsuario(id, pageable));
-}
-
+    @GetMapping("/byusuario/{id}/best")
+    public ResponseEntity<Page<ResenyaEntity>> getResenyasTop(
+            @PathVariable("id") Long id,
+            @PageableDefault(size = 10, sort = "nota", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(oResenyaService.getResenyasTopByUsuario(id, pageable));
+    }
 
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
@@ -69,10 +69,12 @@ public ResponseEntity<Page<ResenyaEntity>> getResenyasTop(
     }
 
     @GetMapping("/byalbum/{id}")
-    public ResponseEntity<Page<ResenyaEntity>> getPageByAlbum(
+    public ResponseEntity<Page<ResenyaWithLikeCountDTO>> getPageByAlbum(
             Pageable oPageable,
             @PathVariable Long id) {
-        return new ResponseEntity<Page<ResenyaEntity>>(oResenyaService.getPageByAlbum(id,oPageable), HttpStatus.OK);
+        Page<ResenyaEntity> page = oResenyaService.getPageByAlbum(id, oPageable);
+        Page<ResenyaWithLikeCountDTO> dtoPage = page.map(resenya -> oResenyaService.toDtoWithLikeCount(resenya));
+        return ResponseEntity.ok(dtoPage);
     }
 
     @DeleteMapping("/{id}")

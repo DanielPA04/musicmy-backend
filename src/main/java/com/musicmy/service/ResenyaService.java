@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.musicmy.dto.ResenyaWithLikeCountDTO;
 import com.musicmy.entity.ResenyaEntity;
 import com.musicmy.entity.UsuarioEntity;
+import com.musicmy.repository.ResenyaLikeRepository;
 import com.musicmy.repository.ResenyaRepository;
 
 import jakarta.transaction.Transactional;
@@ -32,6 +34,9 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
 
     @Autowired
     private RandomService oRandomService;
+
+    @Autowired
+    private ResenyaLikeRepository oResenyaLikeRepository;
 
     @Override
     public Long baseCreate() {
@@ -161,6 +166,19 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
     public boolean isResenyaAlreadyExists(String email, Long idAlbum) {
         return oResenyaRepository.findByAlbumAndUsuario(oAlbumService.get(idAlbum), oUsuarioService.getByEmail(email))
                 .isPresent();
+    }
+
+    public ResenyaWithLikeCountDTO toDtoWithLikeCount(ResenyaEntity resenya) {
+        ResenyaWithLikeCountDTO dto = new ResenyaWithLikeCountDTO();
+        dto.setId(resenya.getId());
+        dto.setNota(resenya.getNota());
+        dto.setDescripcion(resenya.getDescripcion());
+        dto.setFecha(resenya.getFecha());
+        dto.setWebsite(resenya.getWebsite());
+        dto.setAlbum(resenya.getAlbum());
+        dto.setUsuario(resenya.getUsuario());
+        dto.setLikeCount(oResenyaLikeRepository.countByResenya(resenya));
+        return dto;
     }
 
 }

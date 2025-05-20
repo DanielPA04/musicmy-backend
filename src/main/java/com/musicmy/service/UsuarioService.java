@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.dto.EmailDTO;
+import com.musicmy.dto.UsuarioRankingDTO;
 import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.exception.UnauthorizedAccessException;
@@ -137,6 +138,12 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         return usuario.getImg();
     }
 
+
+
+    public List<UsuarioRankingDTO> getTop20Usuarios() {
+        return oUsuarioRepository.getTop20Usuarios();
+    }
+
     @Override
     public Long count() {
         return oUsuarioRepository.count();
@@ -227,7 +234,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             if (oUsuarioEntity.getImg() != null) {
                 oUsuarioEntityFromDatabase.setImg(oUsuarioEntity.getImg());
             }
-
 
             return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
         } else {

@@ -2,6 +2,7 @@ package com.musicmy.api;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.musicmy.dto.UsuarioRankingDTO;
 import com.musicmy.entity.TipousuarioEntity;
 import com.musicmy.entity.UsuarioEntity;
 import com.musicmy.service.UsuarioService;
@@ -47,6 +49,11 @@ public class Usuario {
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioEntity> get(@PathVariable Long id) {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.get(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<UsuarioRankingDTO>> getTop20Usuarios() {
+        return ResponseEntity.ok(oUsuarioService.getTop20Usuarios());
     }
 
     @DeleteMapping("/{id}")

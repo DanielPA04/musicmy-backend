@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,12 +47,12 @@ public class Album {
         return new ResponseEntity<>(oAlbumService.getPageLastMonth(oPageable), HttpStatus.OK);
     }
 
-     @GetMapping("/new")
+    @GetMapping("/new")
     public ResponseEntity<Page<AlbumEntity>> getPageNew(Pageable oPageable) {
         return new ResponseEntity<>(oAlbumService.getPageNew(oPageable), HttpStatus.OK);
     }
 
-     // Álbumes más populares (todos los tiempos)
+    // Álbumes más populares (todos los tiempos)
     @GetMapping("/popular")
     public Page<AlbumEntity> getMostPopularAlbums(
             @PageableDefault(size = 10, sort = "id", direction = Direction.DESC) Pageable pageable) {
@@ -65,7 +66,7 @@ public class Album {
         return oAlbumService.getRecentlyPopularAlbums(pageable);
     }
 
-        // Álbumes con mejor puntuación promedio
+    // Álbumes con mejor puntuación promedio
     @GetMapping("/top-rated")
     public Page<AlbumEntity> getTopRatedAlbums(
             @PageableDefault(size = 10) Pageable pageable) {
@@ -179,5 +180,14 @@ public class Album {
     @GetMapping("/byartista/{id}")
     public ResponseEntity<List<AlbumEntity>> getByAlbum(@PathVariable Long id) {
         return new ResponseEntity<List<AlbumEntity>>(oAlbumService.getByIdArtista(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    public Page<AlbumEntity> buscarAlbums(
+            @RequestParam(value = "genero", required = false) String genero,
+            @RequestParam(value = "discografica", required = false) String discografica,
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @PageableDefault(sort = "fecha", direction = Sort.Direction.DESC) Pageable pageable) {
+        return oAlbumService.search(genero, discografica, nombre, pageable);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.entity.AlbumEntity;
 import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.repository.AlbumRepository;
+import com.musicmy.specifications.AlbumSpecifications;
 
 import jakarta.transaction.Transactional;
 
@@ -133,6 +135,17 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
     // Álbumes mejor valorados (todos los tiempos)
     public Page<AlbumEntity> getTopRatedAlbums(Pageable pageable) {
         return oAlbumRepository.findAllByOrderByAverageRatingDesc(pageable);
+    }
+
+     public Page<AlbumEntity> search(
+            String genero,
+            String discografica,
+            String nombre,
+            Pageable pageable) {
+        Specification<AlbumEntity> spec = AlbumSpecifications.filter(
+            genero, discografica, nombre
+        );
+        return oAlbumRepository.findAll(spec, pageable);
     }
 
     public byte[] getImgById(Long id) {

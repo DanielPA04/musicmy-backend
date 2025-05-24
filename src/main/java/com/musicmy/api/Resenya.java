@@ -77,6 +77,17 @@ public class Resenya {
         return ResponseEntity.ok(dtoPage);
     }
 
+       @GetMapping("/byalbum/likes/{id}")
+    public ResponseEntity<Page<ResenyaWithLikeCountDTO>> getPageByAlbumAndLikes(
+            Pageable oPageable,
+            @PathVariable Long id) {
+        Page<ResenyaEntity> page = oResenyaService.getPageByAlbumAndLikes(id, oPageable);
+        Page<ResenyaWithLikeCountDTO> dtoPage = page.map(resenya -> oResenyaService.toDtoWithLikeCount(resenya));
+        return ResponseEntity.ok(dtoPage);
+    }
+
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oResenyaService.delete(id), HttpStatus.OK);
@@ -110,5 +121,12 @@ public class Resenya {
     @GetMapping("/check/{email}/{albumId}")
     public ResponseEntity<Boolean> existsByEmailAndAlbumId(@PathVariable String email, @PathVariable Long albumId) {
         return new ResponseEntity<Boolean>(oResenyaService.isResenyaAlreadyExists(email, albumId), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/{email}/{albumId}")
+    public ResponseEntity<ResenyaEntity> getResenyaByEmailAndAlbumId(@PathVariable String email,
+            @PathVariable Long albumId) {
+        return new ResponseEntity<ResenyaEntity>(
+                oResenyaService.getByAlbumAndUsuario(email, albumId), HttpStatus.OK);
     }
 }

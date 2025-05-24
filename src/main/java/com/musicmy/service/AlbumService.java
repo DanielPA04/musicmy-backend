@@ -125,17 +125,33 @@ public class AlbumService implements ServiceInterface<AlbumEntity> {
         return oAlbumRepository.findAllByOrderByResenyaCountDesc(pageable);
     }
 
-    // albumes mas populares en los ultimos 3 meses
-    public Page<AlbumEntity> getRecentlyPopularAlbums(Pageable pageable) {
-        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(3);
-        return oAlbumRepository.findAllPopularSince(threeMonthsAgo, pageable);
-    }
+ public Page<AlbumEntity> getTopRated(
+      String genero,
+      String discografica,
+      String nombre,
+      Pageable pageable) {
+    return oAlbumRepository.findFilteredTopRated(
+      genero == null ? null : genero.toLowerCase().trim(),
+      discografica == null ? null : discografica.toLowerCase().trim(),
+      nombre == null ? null : nombre.toLowerCase().trim(),
+      pageable
+    );
+  }
 
-    
-    // Álbumes mejor valorados (todos los tiempos)
-    public Page<AlbumEntity> getTopRatedAlbums(Pageable pageable) {
-        return oAlbumRepository.findAllByOrderByAverageRatingDesc(pageable);
-    }
+  public Page<AlbumEntity> getPopularRecent(
+      String genero,
+      String discografica,
+      String nombre,
+      Pageable pageable) {
+    LocalDate threeMonthsAgo = LocalDate.now().minusMonths(3);
+    return oAlbumRepository.findFilteredPopularSince(
+      threeMonthsAgo,
+      genero == null ? null : genero.toLowerCase().trim(),
+      discografica == null ? null : discografica.toLowerCase().trim(),
+      nombre == null ? null : nombre.toLowerCase().trim(),
+      pageable
+    );
+  }
 
      public Page<AlbumEntity> search(
             String genero,

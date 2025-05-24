@@ -36,17 +36,45 @@ public interface AlbumRepository
   @Query("SELECT a FROM AlbumEntity a LEFT JOIN a.resenyas r GROUP BY a.id ORDER BY COUNT(r.id) DESC")
   Page<AlbumEntity> findAllByOrderByResenyaCountDesc(Pageable pageable);
 
-  // Método para álbumes populares desde cierta fecha
-  @Query("SELECT a FROM AlbumEntity a LEFT JOIN a.resenyas r WHERE r.fecha >= :sinceDate GROUP BY a.id ORDER BY COUNT(r.id) DESC")
-  Page<AlbumEntity> findAllPopularSince(@Param("sinceDate") LocalDate sinceDate, Pageable pageable);
+ 
 
-  // Álbumes mejor valorados (mayor nota promedio)
-  @Query("SELECT a FROM AlbumEntity a " +
-      "LEFT JOIN a.resenyas r " +
-      "GROUP BY a.id " +
-      "HAVING COUNT(r.id) > 0 " + // Solo álbumes con al menos 1 reseña cambiar a mas si creciera
-      "ORDER BY AVG(r.nota) DESC, COUNT(r.id) DESC") // Primero por nota, luego por cantidad de reseñas
-  Page<AlbumEntity> findAllByOrderByAverageRatingDesc(Pageable pageable);
+@Query("""
+      SELECT a
+      FROM AlbumEntity a
+      LEFT JOIN a.resenyas r
+      WHERE (:genero IS NULL OR LOWER(a.genero) LIKE %:genero%) 
+        AND (:discografica IS NULL OR LOWER(a.discografica) LIKE %:discografica%)
+        AND (:nombre IS NULL OR LOWER(a.nombre) LIKE %:nombre%)
+      GROUP BY a.id
+      HAVING COUNT(r.id) > 0
+      ORDER BY AVG(r.nota) DESC, COUNT(r.id) DESC
+    """)
+    Page<AlbumEntity> findFilteredTopRated(
+      @Param("genero") String genero,
+      @Param("discografica") String discografica,
+      @Param("nombre") String nombre,
+      Pageable pageable
+    );
+
+    @Query("""
+      SELECT a
+      FROM AlbumEntity a
+      LEFT JOIN a.resenyas r
+      WHERE r.fecha >= :sinceDate
+        AND (:genero IS NULL OR LOWER(a.genero) LIKE %:genero%) 
+        AND (:discografica IS NULL OR LOWER(a.discografica) LIKE %:discografica%)
+        AND (:nombre IS NULL OR LOWER(a.nombre) LIKE %:nombre%)
+      GROUP BY a.id
+      ORDER BY COUNT(r.id) DESC
+    """)
+    Page<AlbumEntity> findFilteredPopularSince(
+      @Param("sinceDate") LocalDate sinceDate,
+      @Param("genero") String genero,
+      @Param("discografica") String discografica,
+      @Param("nombre") String nombre,
+      Pageable pageable
+    );
+
 
   @Modifying
   @Transactional

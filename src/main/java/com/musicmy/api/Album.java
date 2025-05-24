@@ -59,19 +59,25 @@ public class Album {
         return oAlbumService.getMostPopularAlbums(pageable);
     }
 
-    // Álbumes populares recientemente (últimos 3 meses)
-    @GetMapping("/popular/recent")
-    public Page<AlbumEntity> getRecentlyPopularAlbums(
-            @PageableDefault(size = 10, sort = "id", direction = Direction.DESC) Pageable pageable) {
-        return oAlbumService.getRecentlyPopularAlbums(pageable);
-    }
+ @GetMapping("/top-rated")
+  public Page<AlbumEntity> topRated(
+      @RequestParam(required = false) String genero,
+      @RequestParam(required = false) String discografica,
+      @RequestParam(required = false) String nombre,
+      @PageableDefault(sort = "fecha", direction = Sort.Direction.DESC) Pageable pageable
+  ) {
+    return oAlbumService.getTopRated(genero, discografica, nombre, pageable);
+  }
 
-    // Álbumes con mejor puntuación promedio
-    @GetMapping("/top-rated")
-    public Page<AlbumEntity> getTopRatedAlbums(
-            @PageableDefault(size = 10) Pageable pageable) {
-        return oAlbumService.getTopRatedAlbums(pageable);
-    }
+  @GetMapping("/popular/recent")
+  public Page<AlbumEntity> popularRecent(
+      @RequestParam(required = false) String genero,
+      @RequestParam(required = false) String discografica,
+      @RequestParam(required = false) String nombre,
+      @PageableDefault(sort = "fecha", direction = Sort.Direction.DESC) Pageable pageable
+  ) {
+    return oAlbumService.getPopularRecent(genero, discografica, nombre, pageable);
+  }
 
     @GetMapping("/count")
     public ResponseEntity<Long> count() {

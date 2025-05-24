@@ -15,6 +15,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.dto.ResenyaWithLikeCountDTO;
 import com.musicmy.entity.ResenyaEntity;
 import com.musicmy.entity.UsuarioEntity;
+import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.repository.ResenyaLikeRepository;
 import com.musicmy.repository.ResenyaRepository;
 
@@ -101,6 +102,14 @@ public class ResenyaService implements ServiceInterface<ResenyaEntity> {
 
     public Page<ResenyaEntity> getPageByAlbum(Long id, Pageable oPageable) {
         return oResenyaRepository.findByAlbum(oAlbumService.get(id), oPageable);
+    }
+
+    public Page<ResenyaEntity> getPageByAlbumAndLikes(Long idAlbum, Pageable pageable) {
+        return oResenyaRepository.findByAlbumOrderByLikesDesc(idAlbum, pageable);
+    }
+
+    public ResenyaEntity getByAlbumAndUsuario( String email,Long idAlbum) {
+        return oResenyaRepository.findByAlbumIdAndUsuarioEmail(idAlbum, email).orElseThrow(() -> new ResourceNotFoundException("Reseña no encontrada"));
     }
 
     @Override

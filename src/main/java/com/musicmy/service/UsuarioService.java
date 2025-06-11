@@ -18,6 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.musicmy.dto.EmailDTO;
 import com.musicmy.dto.UsuarioRankingDTO;
 import com.musicmy.entity.UsuarioEntity;
+import com.musicmy.exception.ErrorRegistering;
 import com.musicmy.exception.ResourceNotFoundException;
 import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.repository.TipousuarioRepository;
@@ -108,7 +109,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     public Page<UsuarioEntity> getPage(Pageable oPageable, Optional<String> filter) {
         if (oAuthService.isAdministrador()) {
             if (filter.isPresent()) {
-                // TODO
                 return oUsuarioRepository
                         .findByNombreContainingOrEmailContainingOrWebsiteContaining(
                                 filter.get(), filter.get(), filter.get(), oPageable);
@@ -183,15 +183,13 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
             UsuarioEntity usuario = oUsuarioRepository.save(oUsuarioEntity);
 
-            // TODO mirar que el mail dto asi estatico mal
             this.oEmailService.sendVerificationEmail(
                     new EmailDTO(oUsuarioEntity.getEmail(), "Verificaccion", "Tu cuenta ha sido registrada"),
                     oUsuarioEntity.getCodverf());
 
             return usuario;
         } else {
-            // TODO
-            throw new UnauthorizedAccessException("El email ya esta registrado");
+            throw new ErrorRegistering("El email ya esta registrado");
         }
     }
 

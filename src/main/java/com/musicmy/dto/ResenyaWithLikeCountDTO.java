@@ -19,6 +19,5 @@ public class ResenyaWithLikeCountDTO {
     private UsuarioEntity usuario;
     private Long likeCount;
 
-    // Getters y Setters
 }
 

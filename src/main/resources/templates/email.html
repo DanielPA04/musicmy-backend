@@ -1,14 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Correo de prueba</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MusicMy</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #50005e;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .alert {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #ff5722 !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            padding: 12px 28px;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #e64a19 !important;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Hola, este es un correo de prueba</h1>
-    <p style="color: #f00;" th:text="${message}"></p>
-    <p th:text="${code}"></p>
-    <p th:text="${time}"></p>
+    <div class="container">
+        <h1>MusicMy</h1>
+        <p class="alert" th:text="${message}">Tu cuenta ha sido registrada</p>
+        <a class="button" th:href="@{${code}}" target="_blank" th:text="${type}">Verificar Cuenta</a>
+        <p th:text="${time}"></p>
+        <div class="footer">
+            Si no solicitaste este correo, puedes ignorarlo con seguridad.
+        </div>
+    </div>
 </body>
 </html>

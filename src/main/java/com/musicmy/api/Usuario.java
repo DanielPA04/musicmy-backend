@@ -117,10 +117,16 @@ public class Usuario {
             @RequestParam("tipousuario") String tipousuarioJson) {
 
         try {
+            LocalDate fechaParsed = null;
+            try {
+              fechaParsed = LocalDate.parse(fecha);
+            } catch (Exception e) {
+              fechaParsed = null;
+            }
 
             return new ResponseEntity<>(
                     oUsuarioService.update(
-                            new UsuarioEntity(id, username, nombre, LocalDate.parse(fecha), descripcion,
+                            new UsuarioEntity(id, username, nombre, fechaParsed, descripcion,
                                     email, password, website, img.getBytes(),
                                     new ObjectMapper().readValue(tipousuarioJson, TipousuarioEntity.class))),
                     HttpStatus.OK);

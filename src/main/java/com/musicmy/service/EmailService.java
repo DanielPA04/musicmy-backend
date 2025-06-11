@@ -53,9 +53,10 @@ public class EmailService {
 
             Context context = new org.thymeleaf.context.Context();
             context.setVariable("message", emailDTO.getMessage());
-            // TODO centralizar url
             context.setVariable("code",
-                    "Para verificar su cuenta introduzca este codigo: " + VERF_URL + verificationCode);
+                    VERF_URL + verificationCode);
+            context.setVariable("type", "Verificar Cuenta");
+
             context.setVariable("time", "Tiene 1 semana para verificar su cuenta");
 
             String html = templateEngine.process("email", context);
@@ -63,8 +64,7 @@ public class EmailService {
 
             javaMailSender.send(message);
         } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("Error sending verification email: " + e.getMessage(), e);
         }
 
     }
@@ -82,7 +82,8 @@ public class EmailService {
             Context context = new org.thymeleaf.context.Context();
             context.setVariable("message", emailDTO.getMessage());
             context.setVariable("code",
-                    "Para cambiar su contraseña introduzca este codigo: " + RESET_URL + verificationCode);
+                    RESET_URL + verificationCode);
+            context.setVariable("type", "Cambiar Contraseña");
             context.setVariable("time", "Tiene 24h para cambiar su contraseña");
 
             String html = templateEngine.process("email", context);
@@ -90,8 +91,7 @@ public class EmailService {
 
             javaMailSender.send(message);
         } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("Error sending change password email: " + e.getMessage(), e);
         }
 
     }

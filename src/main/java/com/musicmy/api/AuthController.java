@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.musicmy.bean.LogindataBean;
 import com.musicmy.dto.ChangePwdDTO;
 import com.musicmy.dto.TokenDTO;
+import com.musicmy.exception.VerifyException;
 import com.musicmy.service.AuthService;
 import com.musicmy.service.EmailService;
 
@@ -31,7 +32,8 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LogindataBean credentials) {
         if (authService.checkLogin(credentials)) {
             if (!authService.checkVerification(credentials.getIdentifier())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("\"" + "No esta verificado, por favor verifique su correo" + "\"");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("\"" + "No esta verificado, por favor verifique su correo" + "\"");
             }
             return ResponseEntity.ok("\"" + authService.getToken(credentials.getIdentifier()) + "\"");
         } else {
@@ -43,8 +45,7 @@ public class AuthController {
     public ResponseEntity<String> resendCode(@PathVariable String credential) {
         if (authService.checkRegistered(credential)) {
             if (authService.checkVerification(credential)) {
-                // TODO mirar de hacer error no ok
-                return ResponseEntity.ok("\"" + "Already verified" + "\"");
+                throw new VerifyException("\"" + "Ya verificado" + "\"");
             }
             authService.resendCodeValidation(credential);
             return ResponseEntity.ok("\"" + "Code sent successfully" + "\"");
@@ -59,18 +60,16 @@ public class AuthController {
             authService.verify(token.getToken());
             return ResponseEntity.ok("\"" + authService.getTokenByValidation(token) + "\"");
         } else {
-            return new ResponseEntity<String>("Invalid code", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(401).body("\"" + "Unauthorized, token invalido" + "\"");
         }
-
     }
 
     @GetMapping("/isVerified/{credential}")
     public ResponseEntity<Boolean> isVerified(@PathVariable String credential) {
-    if (!authService.checkRegistered(credential)) {
-    // TODO
-    return ResponseEntity.status(401).body(false);
-    }
-    return ResponseEntity.ok(authService.checkVerification(credential));
+        if (!authService.checkRegistered(credential)) {
+            throw new VerifyException("\"" + "No esta registrado o verificado" + "\"");
+        }
+        return ResponseEntity.ok(authService.checkVerification(credential));
     }
 
     @GetMapping("/isSessionActive")
@@ -93,17 +92,13 @@ public class AuthController {
     public ResponseEntity<String> changePassword(@RequestBody ChangePwdDTO changePwdDTO) {
         if (changePwdDTO.getOldPassword() != null && !changePwdDTO.getOldPassword().isEmpty()) {
             authService.changePassword(changePwdDTO);
-            // TODO response msg y mirar de comprobar email arriba
-            return ResponseEntity.ok().body("\"" + "Password changed successfully" + "\"");
-        } else if( changePwdDTO.getToken() != null && !changePwdDTO.getToken().isEmpty()) {
+            return ResponseEntity.ok().body("\"" + "Contraseña cambiada correctamente" + "\"");
+        } else if (changePwdDTO.getToken() != null && !changePwdDTO.getToken().isEmpty()) {
             authService.changePasswordWhithToken(changePwdDTO);
-            return ResponseEntity.ok().body("\"" + "Password changed successfully" + "\"");
+            return ResponseEntity.ok().body("\"" + "Contraseña cambiada correctamente" + "\"");
         } else {
             return ResponseEntity.status(401).body("\"" + "Unauthorized" + "\"");
         }
     }
-
-
-  
 
 }

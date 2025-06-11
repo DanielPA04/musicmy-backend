@@ -10,6 +10,7 @@ import com.musicmy.dto.ChangePwdDTO;
 import com.musicmy.dto.EmailDTO;
 import com.musicmy.dto.TokenDTO;
 import com.musicmy.entity.UsuarioEntity;
+import com.musicmy.exception.ErrorChangingPassword;
 import com.musicmy.exception.NoSessionException;
 import com.musicmy.exception.UnauthorizedAccessException;
 import com.musicmy.helper.JWTHelper;
@@ -57,7 +58,6 @@ public class AuthService {
                         credentials.getPassword())
                 .isPresent();
     }
-    
 
     private Map<String, String> getClaims(String email) {
         Map<String, String> claims = new HashMap<>();
@@ -217,8 +217,7 @@ public class AuthService {
             user.setPassword(changePwdDTO.getNewPassword());
             oUsuarioRepository.save(user);
         } else {
-            // TODO
-            return;
+            throw new ErrorChangingPassword("La contraseña actual no coincide");
         }
     }
 
@@ -230,9 +229,9 @@ public class AuthService {
             user.setCodresetpwd(null);
             oUsuarioRepository.save(user);
         } else {
-            // TODO
-            throw new UnauthorizedAccessException("Token no coincide");
+            throw new ErrorChangingPassword("Toeken no coincide");
+
+        }
     }
-}
 
 }

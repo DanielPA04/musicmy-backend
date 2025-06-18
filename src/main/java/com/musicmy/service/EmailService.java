@@ -19,8 +19,8 @@ public class EmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    private final String VERF_URL = "http://localhost:4200/verify/";
-    private final String RESET_URL = "http://localhost:4200/reset-password/";
+    private final String VERF_URL = "https://musicmy.es/verify/";
+    private final String RESET_URL = "https://musicmy.es/reset-password/";
 
     public void sendMail(EmailDTO emailDTO) throws MessagingException {
         try {

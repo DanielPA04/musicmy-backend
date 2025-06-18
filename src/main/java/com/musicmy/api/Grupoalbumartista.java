@@ -25,7 +25,7 @@ import com.musicmy.service.GrupoalbumartistaService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/grupoalbumartista")
+@RequestMapping("/initial/grupoalbumartista")
 public class Grupoalbumartista {
     @Autowired
     GrupoalbumartistaService oGrupoalbumartistaService;

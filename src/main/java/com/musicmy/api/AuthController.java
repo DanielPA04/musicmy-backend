@@ -18,7 +18,7 @@ import com.musicmy.service.AuthService;
 import com.musicmy.service.EmailService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/initial/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 public class AuthController {
 

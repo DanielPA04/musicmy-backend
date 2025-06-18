@@ -25,7 +25,7 @@ import com.musicmy.service.ArtistaService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/artista")
+@RequestMapping("/initial/artista")
 public class Artista {
     @Autowired
     ArtistaService oArtistaService;

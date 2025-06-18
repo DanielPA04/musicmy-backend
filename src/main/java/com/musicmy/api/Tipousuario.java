@@ -22,7 +22,7 @@ import com.musicmy.service.TipousuarioService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/tipousuario")
+@RequestMapping("/initial/tipousuario")
 public class Tipousuario {
     @Autowired
     TipousuarioService oTipousuarioService;

@@ -15,7 +15,7 @@ import com.musicmy.service.ResenyaLikeService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/likes")
+@RequestMapping("/initial/likes")
 public class ResenyaLike {
 
     @Autowired

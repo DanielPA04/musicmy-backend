@@ -25,7 +25,7 @@ import org.springframework.data.domain.Sort;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/resenya")
+@RequestMapping("/initial/resenya")
 public class Resenya {
     @Autowired
     ResenyaService oResenyaService;

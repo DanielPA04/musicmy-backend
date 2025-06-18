@@ -16,7 +16,7 @@ import com.musicmy.service.DatabaseService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/database")
+@RequestMapping("/initial/database")
 public class Database {
 
     @Autowired

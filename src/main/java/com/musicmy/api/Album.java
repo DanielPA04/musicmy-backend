@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/album")
+@RequestMapping("/initial/album")
 public class Album {
 
     @Autowired
